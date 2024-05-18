@@ -26,13 +26,16 @@
                                ship-width 
                                ship-height))
 
-(define (draw prev-time)
-    ;; Draw background
+(define (draw-background)
     (set-fill-color! context "#140c1c")
-    (fill-rect context 0.0 0.0 game-width game-height)
-    (draw-image context image:ship
-                0.0 0.0 ship-width ship-height
-                (rect-x ship-hitbox) (rect-y ship-hitbox) ship-width ship-height)
+    (fill-rect context 0.0 0.0 game-width game-height))
+
+
+(define (draw prev-time)
+  (draw-background)
+  (draw-image context image:ship
+              0.0 0.0 ship-width ship-height
+              (rect-x ship-hitbox) (rect-y ship-hitbox) ship-width ship-height)
   (request-animation-frame draw-callback))
 (define draw-callback (procedure->external draw))
 
