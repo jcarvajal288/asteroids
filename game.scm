@@ -1,0 +1,33 @@
+(import (scheme base)
+        (scheme inexact)
+        (hoot debug)
+        (hoot ffi)
+        (hoot hashtables)
+        (hoot match)
+        (dom canvas)
+        (dom document)
+        (dom element)
+        (dom event)
+        (dom image)
+        (dom media)
+        (dom window)
+        (math)
+        (math rect)
+        (math vector))
+
+(define game-width    640.0)
+(define game-height   480.0)
+
+(define (draw prev-time)
+    ;; Draw background
+    (set-fill-color! context "#140c1c")
+    (fill-rect context 0.0 0.0 game-width game-height)
+  (request-animation-frame draw-callback))
+(define draw-callback (procedure->external draw))
+
+;; Canvas and event loop setup
+(define canvas (get-element-by-id "canvas"))
+(define context (get-context canvas "2d"))
+(set-element-width! canvas (exact game-width))
+(set-element-height! canvas (exact game-height))
+(request-animation-frame draw-callback)
