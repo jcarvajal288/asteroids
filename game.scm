@@ -17,10 +17,10 @@
 
 (define image:ship (make-image "assets/images/ship-1.png"))
 
-(define game-width    800.0)
-(define game-height   600.0)
-(define ship-width    86.0)
-(define ship-height   82.0)
+(define game-width    1280.0)
+(define game-height   1024.0)
+(define ship-width    43.0)
+(define ship-height   41.0)
 (define ship-hitbox (make-rect (- (/ game-width 2.0) (/ ship-width 2)) 
                                (- (/ game-height 2.0) (/ ship-height 2))
                                ship-width 
