@@ -32,6 +32,7 @@
 (define game-height   1024.0)
 (define ship-width    43.0)
 (define ship-height   41.0)
+(define thrust-accel  1.0)
 
 (define (make-level-1)
   (make-level (make-ship (vec2 0.0 0.0)
@@ -68,10 +69,31 @@
   (request-animation-frame draw-callback))
 (define draw-callback (procedure->external draw))
 
+;; Input
+(define key:up "ArrowUp")
+(define key:down "ArrowDown")
+(define key:left "ArrowLeft")
+(define key:right "ArrowRight")
+
+(define (on-key-down event)
+  (let* ((key (keyboard-event-code event))
+         (ship (level-ship *level*))
+         (ship-vel (ship-velocity ship)))
+      (if (string=? key key:left)
+        (set-vec2-x! ship-vel (- (vec2-x ship-vel) thrust-accel)))
+      (if (string=? key key:right)
+        (set-vec2-x! ship-vel (+ (vec2-x ship-vel) thrust-accel)))
+      (if (string=? key key:up)
+        (set-vec2-y! ship-vel (- (vec2-y ship-vel) thrust-accel)))
+      (if (string=? key key:down)
+        (set-vec2-y! ship-vel (+ (vec2-y ship-vel) thrust-accel)))))
+
 ;; Canvas and event loop setup
 (define canvas (get-element-by-id "canvas"))
 (define context (get-context canvas "2d"))
 (set-element-width! canvas (exact game-width))
 (set-element-height! canvas (exact game-height))
+(add-event-listener! (current-document) "keydown"
+                     (procedure->external on-key-down))
 (request-animation-frame draw-callback)
 (timeout update-callback dt)
