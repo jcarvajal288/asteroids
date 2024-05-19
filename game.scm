@@ -34,7 +34,7 @@
 (define ship-height   41.0)
 
 (define (make-level-1)
-  (make-level (make-ship (vec2 1.0 0.0)
+  (make-level (make-ship (vec2 0.0 0.0)
                          (make-rect (- (/ game-width 2.0) (/ ship-width 2)) 
                                (- (/ game-height 2.0) (/ ship-height 2))
                                ship-width 
@@ -56,12 +56,15 @@
     (set-fill-color! context "#140c1c")
     (fill-rect context 0.0 0.0 game-width game-height))
 
-(define (draw prev-time)
+(define (draw-ship)
   (let ((ship (level-ship *level*)))
-    (draw-background)
     (draw-image context image:ship
                 0.0 0.0 ship-width ship-height
-                (rect-x (ship-hitbox ship)) (rect-y (ship-hitbox ship)) ship-width ship-height))
+                (rect-x (ship-hitbox ship)) (rect-y (ship-hitbox ship)) ship-width ship-height)))
+
+(define (draw prev-time)
+  (draw-background)
+  (draw-ship)
   (request-animation-frame draw-callback))
 (define draw-callback (procedure->external draw))
 
