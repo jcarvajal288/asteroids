@@ -34,13 +34,23 @@
 (define ship-height   41.0)
 
 (define (make-level-1)
-  (make-level (make-ship (vec2 0.0 0.0)
+  (make-level (make-ship (vec2 1.0 0.0)
                          (make-rect (- (/ game-width 2.0) (/ ship-width 2)) 
                                (- (/ game-height 2.0) (/ ship-height 2))
                                ship-width 
                                ship-height))))
 
 (define *level* (make-level-1))
+
+(define dt (/ 1000.0 60.0)) ; aim for updating at 60Hz
+(define (update)
+  (let* ((ship (level-ship *level*))
+         (ship-hitbox (ship-hitbox ship))
+         (ship-velocity (ship-velocity ship)))
+    (set-rect-x! ship-hitbox (+ (rect-x ship-hitbox) (vec2-x ship-velocity)))
+    (set-rect-y! ship-hitbox (+ (rect-y ship-hitbox) (vec2-y ship-velocity))))
+  (timeout update-callback dt))
+(define update-callback (procedure->external update))
 
 (define (draw-background)
     (set-fill-color! context "#140c1c")
@@ -61,3 +71,4 @@
 (set-element-width! canvas (exact game-width))
 (set-element-height! canvas (exact game-height))
 (request-animation-frame draw-callback)
+(timeout update-callback dt)
