@@ -1,12 +1,18 @@
 (define-module (input)
-               #:export (on-key-down))
+  #:pure
+  #:use-module (scheme base)
+  #:use-module (hoot ffi)
+  #:use-module (dom event)
+  #:use-module (math vector)
+  #:use-module (types)
+  #:export (on-key-down))
 
 (define key:up "ArrowUp")
 (define key:down "ArrowDown")
 (define key:left "ArrowLeft")
 (define key:right "ArrowRight")
 
-(define (on-key-down event)
+(define (on-key-down *level* event)
   (let* ((key (keyboard-event-code event))
          (ship (level-ship *level*))
          (ship-vel (ship-velocity ship)))
