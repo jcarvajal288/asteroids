@@ -14,10 +14,9 @@
         (math)
         (math rect)
         (math vector)
+        (draw)
         (input)
         (types))
-
-(define image:ship (make-image "assets/images/ship-1.png"))
 
 (define game-width    1280.0)
 (define game-height   1024.0)
@@ -43,19 +42,8 @@
   (timeout update-callback dt))
 (define update-callback (procedure->external update))
 
-(define (draw-background)
-    (set-fill-color! context "#140c1c")
-    (fill-rect context 0.0 0.0 game-width game-height))
-
-(define (draw-ship)
-  (let ((ship (level-ship *level*)))
-    (draw-image context image:ship
-                0.0 0.0 ship-width ship-height
-                (rect-x (ship-hitbox ship)) (rect-y (ship-hitbox ship)) ship-width ship-height)))
-
 (define (draw prev-time)
-  (draw-background)
-  (draw-ship)
+  (draw-all-objects prev-time)
   (request-animation-frame draw-callback))
 (define draw-callback (procedure->external draw))
 

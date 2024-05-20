@@ -9,6 +9,7 @@ modules = \
 	modules/math.scm \
 	modules/math/rect.scm \
 	modules/math/vector.scm \
+	modules/draw.scm \
 	modules/input.scm \
 	modules/types.scm 
 
