@@ -18,11 +18,6 @@
         (input)
         (types))
 
-(define game-width    1280.0)
-(define game-height   1024.0)
-(define ship-width    43.0)
-(define ship-height   41.0)
-
 (define (make-level-1)
   (make-level (make-ship (vec2 0.0 0.0)
                          (make-rect (- (/ game-width 2.0) (/ ship-width 2)) 
@@ -43,13 +38,14 @@
 (define update-callback (procedure->external update))
 
 (define (draw prev-time)
-  (draw-all-objects prev-time)
+  (draw-all-objects context *level* prev-time)
   (request-animation-frame draw-callback))
 (define draw-callback (procedure->external draw))
 
 ;; Canvas and event loop setup
 (define canvas (get-element-by-id "canvas"))
 (define context (get-context canvas "2d"))
+(load-all-images)
 (set-element-width! canvas (exact game-width))
 (set-element-height! canvas (exact game-height))
 (add-event-listener! (current-document) "keydown"

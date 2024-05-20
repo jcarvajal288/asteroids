@@ -3,22 +3,27 @@
   #:use-module (scheme base)
   #:use-module (hoot ffi)
   #:use-module (dom image)
+  #:use-module (dom canvas)
+  #:use-module (math rect)
   #:use-module (types)
-  #:export (draw-all-objects))
+  #:export (load-all-images draw-all-objects))
 
-(define image:ship (make-image "assets/images/ship-1.png"))
+(define ship-image #f)
 
-(define (draw-background)
-    (set-fill-color! context "#140c1c")
-    (fill-rect context 0.0 0.0 game-width game-height))
+(define (load-all-images)
+  (set! ship-image (make-image "assets/images/ship-1.png")))
 
-(define (draw-ship)
-  (let ((ship (level-ship *level*)))
-    (draw-image context image:ship
+(define (draw-background context)
+  (set-fill-color! context "#140c1c")
+  (fill-rect context 0.0 0.0 game-width game-height))
+
+(define (draw-ship context ship)
+    (draw-image context ship-image
                 0.0 0.0 ship-width ship-height
-                (rect-x (ship-hitbox ship)) (rect-y (ship-hitbox ship)) ship-width ship-height)))
+                (rect-x (ship-hitbox ship)) (rect-y (ship-hitbox ship)) ship-width ship-height))
 
-(define (draw-all-objects prev-time)
-  (draw-background)
-  (draw-ship))
+(define (draw-all-objects context level prev-time)
+  (let ((ship (level-ship level)))
+    (draw-background context)
+    (draw-ship context ship)))
 
