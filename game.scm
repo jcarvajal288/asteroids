@@ -22,6 +22,7 @@
 
 (define (make-level-1)
   (make-level (make-ship (vec2 0.0 0.0)
+                         0.0
                          (make-rect (- (/ game-width 2.0) (/ ship-width 2)) 
                                (- (/ game-height 2.0) (/ ship-height 2))
                                ship-width 
