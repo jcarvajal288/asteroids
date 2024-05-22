@@ -32,7 +32,9 @@
             draw-image
             set-scale!
             set-transform!
-            set-image-smoothing-enabled!))
+            set-image-smoothing-enabled!
+            rotate!
+            translate!))
 
 ;; HTMLCanvasElement
 (define-foreign get-context
@@ -70,3 +72,9 @@
 (define-foreign set-image-smoothing-enabled!
   "canvas" "setImageSmoothingEnabled"
   (ref extern) i32 -> none)
+(define-foreign rotate!
+  "canvas" "rotate"
+  (ref extern) f64 -> none)
+(define-foreign translate!
+  "canvas" "translate"
+  (ref extern) f64 f64 -> none)

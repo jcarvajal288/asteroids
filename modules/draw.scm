@@ -1,6 +1,7 @@
 (define-module (draw)
   #:pure
   #:use-module (scheme base)
+  #:use-module (scheme write)
   #:use-module (hoot ffi)
   #:use-module (dom image)
   #:use-module (dom canvas)
@@ -18,9 +19,16 @@
   (fill-rect context 0.0 0.0 game-width game-height))
 
 (define (draw-ship context ship)
+  (let* ((ship-rect (ship-hitbox ship))
+         (ship-x (+ (rect-x ship-rect) (/ ship-width 2)))
+         (ship-y (+ (rect-y ship-rect) (/ ship-height 2)))
+         (ship-center (list ship-x ship-y)))
+    (translate! context ship-x ship-y) 
+    (rotate! context 0.01)
+    (translate! context (- ship-x) (- ship-y))
     (draw-image context ship-image
                 0.0 0.0 ship-width ship-height
-                (rect-x (ship-hitbox ship)) (rect-y (ship-hitbox ship)) ship-width ship-height))
+                (rect-x (ship-hitbox ship)) (rect-y (ship-hitbox ship)) ship-width ship-height)))
 
 (define (draw-all-objects context level prev-time)
   (let ((ship (level-ship level)))
