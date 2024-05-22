@@ -9,6 +9,7 @@
             dt
             make-ship
             ship-velocity
+            ship-heading-set!
             ship-heading
             ship-hitbox
             make-level
@@ -24,7 +25,7 @@
   (make-ship velocity heading hitbox)
   ship?
   (velocity ship-velocity)
-  (heading ship-heading)
+  (heading ship-heading ship-heading-set!)
   (hitbox ship-hitbox))
 
 (define-record-type <level>
