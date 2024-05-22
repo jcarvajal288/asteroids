@@ -11,8 +11,7 @@
             ship-velocity
             ship-hitbox
             make-level
-            level-ship 
-            thrust-accel))
+            level-ship))
 
 (define game-width    1280.0)
 (define game-height   1024.0)
@@ -30,6 +29,3 @@
   (make-level ship)
   level?
   (ship level-ship))
-
-(define thrust-accel  1.0)
-

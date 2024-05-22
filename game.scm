@@ -1,5 +1,6 @@
 (import (scheme base)
         (scheme inexact)
+        (scheme write)
         (hoot debug)
         (hoot ffi)
         (hoot hashtables)
@@ -28,7 +29,10 @@
 
 (define *level* (make-level-1))
 
-(define update-callback (procedure->external (lambda () (update *level*))))
+(define (update-func)
+  (update-all *level*)
+  (timeout update-callback dt))
+(define update-callback (procedure->external update-func))
 
 (define (draw prev-time)
   (draw-all-objects context *level* prev-time)
@@ -42,6 +46,8 @@
 (set-element-width! canvas (exact game-width))
 (set-element-height! canvas (exact game-height))
 (add-event-listener! (current-document) "keydown"
-                     (procedure->external (lambda (event) (on-key-down *level* event))))
+                     (procedure->external on-key-down))
+(add-event-listener! (current-document) "keyup"
+                     (procedure->external on-key-up))
 (request-animation-frame draw-callback)
 (timeout update-callback dt)
