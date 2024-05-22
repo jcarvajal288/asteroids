@@ -1,0 +1,16 @@
+(define-module (update)
+  #:pure
+  #:use-module (scheme base)
+  #:use-module (hoot ffi)
+  #:use-module (types)
+  #:use-module (math rect)
+  #:use-module (math vector)
+  #:use-module (dom window)
+  #:export (update))
+
+(define (update *level*)
+  (let* ((ship (level-ship *level*))
+         (ship-hitbox (ship-hitbox ship))
+         (ship-velocity (ship-velocity ship)))
+    (set-rect-x! ship-hitbox (+ (rect-x ship-hitbox) (vec2-x ship-velocity)))
+    (set-rect-y! ship-hitbox (+ (rect-y ship-hitbox) (vec2-y ship-velocity)))))

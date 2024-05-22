@@ -6,6 +6,7 @@
             game-height
             ship-width
             ship-height
+            dt
             make-ship
             ship-velocity
             ship-hitbox
@@ -17,6 +18,7 @@
 (define game-height   1024.0)
 (define ship-width    43.0)
 (define ship-height   41.0)
+(define dt (/ 1000.0 60.0)) ; aim for updating at 60Hz
 
 (define-record-type <ship>
   (make-ship velocity hitbox)

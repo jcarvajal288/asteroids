@@ -16,7 +16,8 @@
         (math vector)
         (draw)
         (input)
-        (types))
+        (types)
+        (update))
 
 (define (make-level-1)
   (make-level (make-ship (vec2 0.0 0.0)
@@ -27,15 +28,7 @@
 
 (define *level* (make-level-1))
 
-(define dt (/ 1000.0 60.0)) ; aim for updating at 60Hz
-(define (update)
-  (let* ((ship (level-ship *level*))
-         (ship-hitbox (ship-hitbox ship))
-         (ship-velocity (ship-velocity ship)))
-    (set-rect-x! ship-hitbox (+ (rect-x ship-hitbox) (vec2-x ship-velocity)))
-    (set-rect-y! ship-hitbox (+ (rect-y ship-hitbox) (vec2-y ship-velocity))))
-  (timeout update-callback dt))
-(define update-callback (procedure->external update))
+(define update-callback (procedure->external (lambda () (update *level*))))
 
 (define (draw prev-time)
   (draw-all-objects context *level* prev-time)
