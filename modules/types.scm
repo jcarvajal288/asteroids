@@ -4,12 +4,10 @@
   #:use-module (hoot ffi)
   #:use-module (math vector)
   #:use-module (math rect)
-  #:export (game-width
-            game-height
-            ship-width
+  #:export (ship-width
             ship-height
             dt
-            make-default-ship
+            make-default-level
             ship-velocity
             ship-heading-set!
             ship-heading
@@ -17,10 +15,10 @@
             ship-rotation-speed
             ship-hitbox
             make-level
+            level-width
+            level-height
             level-ship))
 
-(define game-width    1280.0)
-(define game-height   1024.0)
 (define dt (/ 1000.0 60.0)) ; aim for updating at 60Hz
 
 (define-record-type <ship>
@@ -34,20 +32,30 @@
   (rotation-speed ship-rotation-speed)
   (hitbox ship-hitbox))
 
-(define (make-default-ship)
+(define (make-default-ship level-width level-height)
   (let* ((width 43.0)
          (height 41.0)
          (velocity (vec2 0.0 0.0))
          (heading 0.0)
          (thrust-accel 1.0)
          (rotation-speed 2.0)
-         (hitbox (make-rect (- (/ game-width 2.0) (/ width 2)) 
-                            (- (/ game-height 2.0) (/ height 2))
+         (hitbox (make-rect (- (/ level-width 2) (/ width 2)) 
+                            (- (/ level-height 2) (/ height 2))
                             width 
                             height)))
     (make-ship width height velocity heading thrust-accel rotation-speed hitbox)))
 
 (define-record-type <level>
-  (make-level ship)
+  (make-level width height ship)
   level?
+  (width level-width)
+  (height level-height)
   (ship level-ship))
+
+(define (make-default-level)
+  (let* ((width 1280.0)
+         (height 1024.0)
+         (ship (make-default-ship width height)))
+    (make-level width height ship)))
+
+

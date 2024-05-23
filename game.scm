@@ -20,10 +20,7 @@
         (types)
         (update))
 
-(define (make-level-1)
-  (make-level (make-default-ship)))
-
-(define *level* (make-level-1))
+(define *level* (make-default-level))
 
 (define (update-func)
   (update-all *level*)
@@ -39,8 +36,8 @@
 (define canvas (get-element-by-id "canvas"))
 (define context (get-context canvas "2d"))
 (load-all-images)
-(set-element-width! canvas (exact game-width))
-(set-element-height! canvas (exact game-height))
+(set-element-width! canvas (exact (level-width *level*)))
+(set-element-height! canvas (exact (level-height *level*)))
 (add-event-listener! (current-document) "keydown"
                      (procedure->external on-key-down))
 (add-event-listener! (current-document) "keyup"

@@ -16,9 +16,9 @@
 (define (load-all-images)
   (set! ship-image (make-image "assets/images/ship-1.png")))
 
-(define (draw-background context)
+(define (draw-background context width height)
   (set-fill-color! context "#140c1c")
-  (fill-rect context 0.0 0.0 game-width game-height))
+  (fill-rect context 0.0 0.0 width height))
 
 (define (draw-ship context ship)
   (let* ((ship-rect (ship-hitbox ship))
@@ -36,7 +36,7 @@
 
 (define (draw-all-objects context level prev-time)
   (reset-transform! context)
+  (draw-background context (level-width level) (level-height level))
   (let ((ship (level-ship level)))
-    (draw-background context)
     (draw-ship context ship)))
 
