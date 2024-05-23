@@ -11,6 +11,8 @@
             ship-velocity
             ship-heading-set!
             ship-heading
+            ship-thrust-accel
+            ship-rotation-speed
             ship-hitbox
             make-level
             level-ship))
@@ -22,10 +24,12 @@
 (define dt (/ 1000.0 60.0)) ; aim for updating at 60Hz
 
 (define-record-type <ship>
-  (make-ship velocity heading hitbox)
+  (make-ship velocity heading thrust-accel rotation-speed hitbox)
   ship?
   (velocity ship-velocity)
   (heading ship-heading ship-heading-set!)
+  (thrust-accel ship-thrust-accel)
+  (rotation-speed ship-rotation-speed)
   (hitbox ship-hitbox))
 
 (define-record-type <level>
