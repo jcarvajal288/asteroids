@@ -62,6 +62,7 @@ window.addEventListener("load", async () => {
         drawImage: (ctx, image, sx, sy, sw, sh, dx, dy, dw, dh) => ctx.drawImage(image, sx, sy, sw, sh, dx, dy, dw, dh),
         setScale: (ctx, sx, sy) => ctx.scale(sx, sy),
         setTransform: (ctx, a, b, c, d, e, f) => ctx.setTransform(a, b, c, d, e, f),
+        resetTransform: (ctx) => ctx.reset(),
         setImageSmoothingEnabled: (ctx, enabled) => ctx.imageSmoothingEnabled = (enabled == 1),
         rotate: (ctx, angle) => ctx.rotate(angle),
         translate: (ctx, x, y) => ctx.translate(x, y)

@@ -9,6 +9,8 @@
   #:use-module (types)
   #:export (load-all-images draw-all-objects))
 
+(define PI 3.14159)
+
 (define ship-image #f)
 
 (define (load-all-images)
@@ -24,13 +26,14 @@
          (ship-y (+ (rect-y ship-rect) (/ ship-height 2)))
          (ship-center (list ship-x ship-y)))
     (translate! context ship-x ship-y) 
-    (rotate! context (ship-heading ship))
+    (rotate! context (/ (* (ship-heading ship) PI) 180.0))
     (translate! context (- ship-x) (- ship-y))
     (draw-image context ship-image
                 0.0 0.0 ship-width ship-height
                 (rect-x (ship-hitbox ship)) (rect-y (ship-hitbox ship)) ship-width ship-height)))
 
 (define (draw-all-objects context level prev-time)
+  (reset-transform! context)
   (let ((ship (level-ship level)))
     (draw-background context)
     (draw-ship context ship)))

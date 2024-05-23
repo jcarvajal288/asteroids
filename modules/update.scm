@@ -11,7 +11,7 @@
   #:export (update-all))
 
 (define thrust-accel  1.0)
-(define rotation-speed 1.0)
+(define rotation-speed 2.0)
 
 (define (move-left ship-vel) (set-vec2-x! ship-vel (- (vec2-x ship-vel) thrust-accel)))
 (define (move-right ship-vel) (set-vec2-x! ship-vel (+ (vec2-x ship-vel) thrust-accel)))
@@ -21,13 +21,11 @@
 (define (rotate-left ship)
   (let* ((new-heading (- (ship-heading ship) rotation-speed))
          (clamped-heading (modulo new-heading 360.0)))
-    (display clamped-heading)
     (ship-heading-set! ship clamped-heading)))
 
 (define (rotate-right ship)
   (let* ((new-heading (+ (ship-heading ship) rotation-speed))
          (clamped-heading (modulo new-heading 360.0)))
-    (display clamped-heading)
     (ship-heading-set! ship clamped-heading)))
         
 (define (update-all *level*)
@@ -35,7 +33,6 @@
          (ship-hitbox (ship-hitbox ship))
          (ship-heading (ship-heading ship))
          (ship-velocity (ship-velocity ship)))
-    (display ship-heading)
     (if command:move-left (move-left ship-velocity))
     (if command:move-right (move-right ship-velocity))
     (if command:move-forward (move-forward ship-velocity))

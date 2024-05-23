@@ -32,6 +32,7 @@
             draw-image
             set-scale!
             set-transform!
+            reset-transform!
             set-image-smoothing-enabled!
             rotate!
             translate!))
@@ -69,6 +70,9 @@
 (define-foreign set-transform!
   "canvas" "setTransform"
   (ref extern) f64 f64 f64 f64 f64 f64 -> none)
+(define-foreign reset-transform!
+  "canvas" "resetTransform"
+  (ref extern) -> none)
 (define-foreign set-image-smoothing-enabled!
   "canvas" "setImageSmoothingEnabled"
   (ref extern) i32 -> none)
