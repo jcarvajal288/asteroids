@@ -22,15 +22,17 @@
 
 (define (draw-ship context ship)
   (let* ((ship-rect (ship-hitbox ship))
-         (ship-x (+ (rect-x ship-rect) (/ ship-width 2)))
-         (ship-y (+ (rect-y ship-rect) (/ ship-height 2)))
+         (width (ship-width ship))
+         (height (ship-height ship))
+         (ship-x (+ (rect-x ship-rect) (/ width 2)))
+         (ship-y (+ (rect-y ship-rect) (/ height 2)))
          (ship-center (list ship-x ship-y)))
     (translate! context ship-x ship-y) 
     (rotate! context (/ (* (ship-heading ship) PI) 180.0))
     (translate! context (- ship-x) (- ship-y))
     (draw-image context ship-image
-                0.0 0.0 ship-width ship-height
-                (rect-x (ship-hitbox ship)) (rect-y (ship-hitbox ship)) ship-width ship-height)))
+                0.0 0.0 width height
+                (rect-x ship-rect) (rect-y ship-rect) width height)))
 
 (define (draw-all-objects context level prev-time)
   (reset-transform! context)
