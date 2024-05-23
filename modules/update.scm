@@ -56,8 +56,27 @@
     (set-rect-x! hitbox (+ (rect-x hitbox) (vec2-x velocity)))
     (set-rect-y! hitbox (+ (rect-y hitbox) (vec2-y velocity)))))
 
+(define (edge-warp hitbox width height)
+  (let* ((northernmost (rect-y hitbox))
+         (southernmost (+ northernmost (rect-height hitbox)))
+         (easternmost (rect-x hitbox))
+         (westernmost (+ easternmost (rect-width hitbox))))
+    (cond 
+      ((< southernmost 0) 
+        (cons (rect-x hitbox) height))
+      ((< easternmost 0)
+        (cons width (rect-y hitbox)))
+      ((> northernmost height)
+        (cons (rect-x hitbox) 0))
+      ((> westernmost width)
+        (cons 0 (rect-y hitbox)))
+      (else (cons (rect-x hitbox) (rect-y hitbox))))))
+
         
 (define (update-all *level*)
   (let* ((ship (level-ship *level*)))
     (apply-commands ship)
-    (move-ship ship)))
+    (move-ship ship)
+    (let ((warp-point (edge-warp (ship-hitbox ship) (level-width *level*) (level-height *level*))))
+      (set-rect-x! (ship-hitbox ship) (car warp-point))
+      (set-rect-y! (ship-hitbox ship) (cdr warp-point)))))
