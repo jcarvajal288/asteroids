@@ -38,7 +38,8 @@
             vec2-mul-scalar!
             vec2-magnitude
             vec2-normalize!
-            vec2-clamp!))
+            vec2-clamp!
+            vec2-limit!))
 
 ;; For speed, a vec2 is a wrapper around a bytevector so that we can
 ;; use unboxed floats.
@@ -92,3 +93,9 @@
 (define (vec2-clamp! v xmin ymin xmax ymax)
   (set-vec2-x! v (clamp (vec2-x v) xmin xmax))
   (set-vec2-y! v (clamp (vec2-y v) ymin ymax)))
+
+(define (vec2-limit! v max-length)
+  (let* ((v-mag (vec2-magnitude v))
+         (reduction-length (- v-mag max-length)))
+    (if (> reduction-length 0)
+        (vec2-mul-scalar! v (- 1 (/ reduction-length v-mag))))))

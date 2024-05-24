@@ -37,7 +37,12 @@
   #:pure
   #:use-module (scheme base)
   #:use-module (hoot ffi)
-  #:export (random clamp))
+  #:export (PI to-radians random clamp))
+
+(define PI 3.14159265)
+
+(define (to-radians degrees)
+  (* degrees (/ PI 180)))
 
 (define-foreign random
   "math" "random"

@@ -5,11 +5,10 @@
   #:use-module (hoot ffi)
   #:use-module (dom image)
   #:use-module (dom canvas)
+  #:use-module (math)
   #:use-module (math rect)
   #:use-module (types)
   #:export (load-all-images draw-all-objects))
-
-(define PI 3.14159)
 
 (define ship-image #f)
 
@@ -28,7 +27,7 @@
          (ship-y (+ (rect-y ship-rect) (/ height 2)))
          (ship-center (list ship-x ship-y)))
     (translate! context ship-x ship-y) 
-    (rotate! context (/ (* (ship-heading ship) PI) 180.0))
+    (rotate! context (to-radians (ship-heading ship)))
     (translate! context (- ship-x) (- ship-y))
     (draw-image context ship-image
                 0.0 0.0 width height

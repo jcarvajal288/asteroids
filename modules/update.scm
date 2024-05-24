@@ -5,15 +5,14 @@
   #:use-module (scheme write)
   #:use-module (types)
   #:use-module (input)
+  #:use-module (math)
   #:use-module (math rect)
   #:use-module (math vector)
   #:use-module (dom window)
   #:export (update-all))
 
-(define PI 3.14159)
-
 (define (get-thrust-vector heading acceleration)
-  (let ((heading-in-radians (* heading (/ PI 180))))
+  (let ((heading-in-radians (to-radians heading)))
     (vec2 (* acceleration (sin heading-in-radians))
           (- (* acceleration (cos heading-in-radians)))))) ; negative because positive y is towards the bottom
 
@@ -31,7 +30,8 @@
   (let* ((ship-vel (ship-velocity ship))
          (thrust-accel (ship-thrust-accel ship))
          (thrust-vector (get-thrust-vector (ship-heading ship) thrust-accel)))
-    (vec2-add! ship-vel thrust-vector)))
+    (vec2-add! ship-vel thrust-vector)
+    (vec2-limit! ship-vel (ship-top-speed ship))))
 
 (define (accelerate-backward ship) 
   (let ((ship-vel (ship-velocity ship))
