@@ -1,7 +1,7 @@
 (define-module (update)
   #:pure
   #:use-module (scheme base)
-  #:use-module (hoot ffi)
+  #:use-module (scheme inexact)
   #:use-module (scheme write)
   #:use-module (types)
   #:use-module (input)
@@ -9,6 +9,13 @@
   #:use-module (math vector)
   #:use-module (dom window)
   #:export (update-all))
+
+(define PI 3.14159)
+
+(define (get-thrust-vector heading acceleration)
+  (let ((heading-in-radians (* heading (/ PI 180))))
+    (vec2 (* acceleration (sin heading-in-radians))
+          (- (* acceleration (cos heading-in-radians)))))) ; negative because positive y is towards the bottom
 
 (define (accelerate-left ship) 
   (let ((ship-vel (ship-velocity ship))
@@ -21,9 +28,10 @@
   (set-vec2-x! ship-vel (+ (vec2-x ship-vel) thrust-accel))))
 
 (define (accelerate-forward ship) 
-  (let ((ship-vel (ship-velocity ship))
-        (thrust-accel (ship-thrust-accel ship)))
-  (set-vec2-y! ship-vel (- (vec2-y ship-vel) thrust-accel))))
+  (let* ((ship-vel (ship-velocity ship))
+         (thrust-accel (ship-thrust-accel ship))
+         (thrust-vector (get-thrust-vector (ship-heading ship) thrust-accel)))
+    (vec2-add! ship-vel thrust-vector)))
 
 (define (accelerate-backward ship) 
   (let ((ship-vel (ship-velocity ship))
@@ -59,17 +67,17 @@
 (define (edge-warp hitbox width height)
   (let* ((northernmost (rect-y hitbox))
          (southernmost (+ northernmost (rect-height hitbox)))
-         (easternmost (rect-x hitbox))
-         (westernmost (+ easternmost (rect-width hitbox))))
+         (westernmost (rect-x hitbox))
+         (easternmost (+ westernmost (rect-width hitbox))))
     (cond 
       ((< southernmost 0) 
         (cons (rect-x hitbox) height))
       ((< easternmost 0)
         (cons width (rect-y hitbox)))
       ((> northernmost height)
-        (cons (rect-x hitbox) 0))
+        (cons (rect-x hitbox) (- (rect-height hitbox))))
       ((> westernmost width)
-        (cons 0 (rect-y hitbox)))
+        (cons (- (rect-width hitbox)) (rect-y hitbox)))
       (else (cons (rect-x hitbox) (rect-y hitbox))))))
 
         
