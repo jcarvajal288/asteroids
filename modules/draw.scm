@@ -8,6 +8,7 @@
   #:use-module (math)
   #:use-module (math rect)
   #:use-module (types)
+  #:use-module (ship)
   #:export (load-all-images draw-all-objects))
 
 (define image:ship #f)
@@ -27,12 +28,15 @@
          (height (ship-height ship))
          (ship-x (+ (rect-x ship-rect) (/ width 2)))
          (ship-y (+ (rect-y ship-rect) (/ height 2))))
+    (save context)
     (translate! context ship-x ship-y) 
     (rotate! context (to-radians (ship-heading ship)))
     (translate! context (- ship-x) (- ship-y))
     (draw-image context image:ship
                 0.0 0.0 width height
-                (rect-x ship-rect) (rect-y ship-rect) width height)))
+                (rect-x ship-rect) (rect-y ship-rect) width height)
+    (restore! context)))
+
 
 (define (draw-asteroids context)
   (draw-image context image:asteroid-1

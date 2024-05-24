@@ -66,6 +66,8 @@ window.addEventListener("load", async () => {
         setImageSmoothingEnabled: (ctx, enabled) => ctx.imageSmoothingEnabled = (enabled == 1),
         rotate: (ctx, angle) => ctx.rotate(angle),
         translate: (ctx, x, y) => ctx.translate(x, y),
+        save: (ctx) => ctx.save(),
+        restore: (ctx) => ctx.restore(),
       },
       math: {
         random: () => Math.random()

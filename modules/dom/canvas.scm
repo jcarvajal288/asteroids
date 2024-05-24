@@ -35,7 +35,9 @@
             reset-transform!
             set-image-smoothing-enabled!
             rotate!
-            translate!))
+            translate!
+            save
+            restore!))
 
 ;; HTMLCanvasElement
 (define-foreign get-context
@@ -46,39 +48,59 @@
 (define-foreign set-fill-color!
   "canvas" "setFillColor"
   (ref extern) (ref string) -> none)
+
 (define-foreign set-font!
   "canvas" "setFont"
   (ref extern) (ref string) -> none)
+
 (define-foreign set-text-align!
   "canvas" "setTextAlign"
   (ref extern) (ref string) -> none)
+
 (define-foreign clear-rect
   "canvas" "clearRect"
   (ref extern) f64 f64 f64 f64 -> none)
+
 (define-foreign fill-rect
   "canvas" "fillRect"
   (ref extern) f64 f64 f64 f64 -> none)
+
 (define-foreign fill-text
   "canvas" "fillText"
   (ref extern) (ref string) f64 f64 -> none)
+
 (define-foreign draw-image
   "canvas" "drawImage"
   (ref extern) (ref extern) f64 f64 f64 f64 f64 f64 f64 f64 -> none)
+
 (define-foreign set-scale!
   "canvas" "setScale"
   (ref extern) f64 f64 -> none)
+
 (define-foreign set-transform!
   "canvas" "setTransform"
   (ref extern) f64 f64 f64 f64 f64 f64 -> none)
+
 (define-foreign reset-transform!
   "canvas" "resetTransform"
   (ref extern) -> none)
+
 (define-foreign set-image-smoothing-enabled!
   "canvas" "setImageSmoothingEnabled"
   (ref extern) i32 -> none)
+
 (define-foreign rotate!
   "canvas" "rotate"
   (ref extern) f64 -> none)
+
 (define-foreign translate!
   "canvas" "translate"
   (ref extern) f64 f64 -> none)
+
+(define-foreign save
+  "canvas" "save"
+  (ref extern) -> none)
+
+(define-foreign restore!
+  "canvas" "restore"
+  (ref extern) -> none)

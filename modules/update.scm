@@ -4,6 +4,7 @@
   #:use-module (scheme inexact)
   #:use-module (scheme write)
   #:use-module (types)
+  #:use-module (ship)
   #:use-module (input)
   #:use-module (math)
   #:use-module (math rect)
