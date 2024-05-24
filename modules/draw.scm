@@ -22,20 +22,25 @@
   (set-fill-color! context "#140c1c")
   (fill-rect context 0.0 0.0 width height))
 
+(define (draw-with-rotation context image heading sx sy sw sh dx dy dw dh)
+  (let ((center-x (+ dx (/ dw 2)))
+        (center-y (+ dy (/ dh 2))))
+    (save context)
+    (translate! context center-x center-y) 
+    (rotate! context (to-radians heading))
+    (translate! context (- center-x) (- center-y))
+    (draw-image context image
+                sx sy sw sh
+                dx dy dw dh)
+    (restore! context)))
+
 (define (draw-ship context ship)
   (let* ((ship-rect (ship-hitbox ship))
          (width (ship-width ship))
-         (height (ship-height ship))
-         (ship-x (+ (rect-x ship-rect) (/ width 2)))
-         (ship-y (+ (rect-y ship-rect) (/ height 2))))
-    (save context)
-    (translate! context ship-x ship-y) 
-    (rotate! context (to-radians (ship-heading ship)))
-    (translate! context (- ship-x) (- ship-y))
-    (draw-image context image:ship
-                0.0 0.0 width height
-                (rect-x ship-rect) (rect-y ship-rect) width height)
-    (restore! context)))
+         (height (ship-height ship)))
+    (draw-with-rotation context image:ship (ship-heading ship)
+                        0 0 width height
+                        (rect-x ship-rect) (rect-y ship-rect) width height)))
 
 
 (define (draw-asteroids context)
