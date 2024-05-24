@@ -40,7 +40,7 @@ window.addEventListener("load", async () => {
           const img = new Image();
           img.src = src;
           return img;
-        }
+        },
       },
       media: {
         newAudio: (src) => new Audio(src),
@@ -65,7 +65,7 @@ window.addEventListener("load", async () => {
         resetTransform: (ctx) => ctx.reset(),
         setImageSmoothingEnabled: (ctx, enabled) => ctx.imageSmoothingEnabled = (enabled == 1),
         rotate: (ctx, angle) => ctx.rotate(angle),
-        translate: (ctx, x, y) => ctx.translate(x, y)
+        translate: (ctx, x, y) => ctx.translate(x, y),
       },
       math: {
         random: () => Math.random()
