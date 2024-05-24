@@ -8,8 +8,6 @@
   #:use-module (types)
   #:export (on-key-down
             on-key-up 
-            command:accelerate-left
-            command:accelerate-right
             command:accelerate-forward
             command:accelerate-backward
             command:rotate-left
@@ -20,8 +18,6 @@
 (define key:left "ArrowLeft")
 (define key:right "ArrowRight")
 
-(define command:accelerate-left #f)
-(define command:accelerate-right #f)
 (define command:accelerate-forward #f)
 (define command:accelerate-backward #f)
 (define command:rotate-left #f)

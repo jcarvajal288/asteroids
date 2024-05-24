@@ -16,15 +16,6 @@
     (vec2 (* acceleration (sin heading-in-radians))
           (- (* acceleration (cos heading-in-radians)))))) ; negative because positive y is towards the bottom
 
-(define (accelerate-left ship) 
-  (let ((ship-vel (ship-velocity ship))
-        (thrust-accel (ship-thrust-accel ship)))
-  (set-vec2-x! ship-vel (- (vec2-x ship-vel) thrust-accel))))
-
-(define (accelerate-right ship) 
-  (let ((ship-vel (ship-velocity ship))
-        (thrust-accel (ship-thrust-accel ship)))
-  (set-vec2-x! ship-vel (+ (vec2-x ship-vel) thrust-accel))))
 
 (define (accelerate-forward ship) 
   (let* ((ship-vel (ship-velocity ship))
@@ -34,9 +25,11 @@
     (vec2-limit! ship-vel (ship-top-speed ship))))
 
 (define (accelerate-backward ship) 
-  (let ((ship-vel (ship-velocity ship))
-        (thrust-accel (ship-thrust-accel ship)))
-  (set-vec2-y! ship-vel (+ (vec2-y ship-vel) thrust-accel))))
+  (let* ((ship-vel (ship-velocity ship))
+         (thrust-accel (/ (ship-thrust-accel ship) 2))
+         (thrust-vector (get-thrust-vector (ship-heading ship) thrust-accel)))
+    (vec2-sub! ship-vel thrust-vector)
+    (vec2-limit! ship-vel (ship-top-speed ship))))
 
 
 (define (rotate-left ship)
@@ -51,8 +44,6 @@
 
 
 (define (apply-commands ship)
-  (if command:accelerate-left (accelerate-left ship))
-  (if command:accelerate-right (accelerate-right ship))
   (if command:accelerate-forward (accelerate-forward ship))
   (if command:accelerate-backward (accelerate-backward ship))
   (if command:rotate-left (rotate-left ship))
