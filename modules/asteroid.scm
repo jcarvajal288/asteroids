@@ -29,8 +29,13 @@
          (velocity (vec2 (- (random-float 1 10) 5) (- (random-float 1 10) 5)))
          (heading (random-float 0 360))
          (rotation-speed (random-float 0 2))
-         (hitbox (make-rect (random-float 0 level-width)
-                            level-height
-                            width
-                            height)))
+         (hitbox (if (> (random) 0.5)
+                   (make-rect (random-float 0 level-width)
+                               level-height
+                               width
+                               height)
+                   (make-rect level-width
+                              (random-float 0 level-height)
+                              width
+                              height))))
   (make-asteroid width height velocity heading rotation-speed hitbox)))
