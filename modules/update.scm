@@ -3,6 +3,7 @@
   #:use-module (scheme base)
   #:use-module (scheme inexact)
   #:use-module (scheme write)
+  #:use-module (stdlib)
   #:use-module (level)
   #:use-module (ship)
   #:use-module (asteroid)
@@ -88,6 +89,17 @@
       (set-rect-x! hitbox (car warp-point))
       (set-rect-y! hitbox (cdr warp-point))))
 
+
+(define (asteroid-hit? hitbox asteroid)
+  (rect-intersects? hitbox (asteroid-hitbox asteroid)))
+
+(define (handle-collisions *level*)
+  (let* ((ship (level-ship *level*))
+         (asteroids (level-asteroids *level*))
+         (colliding-asteroids (filter (lambda (a) (asteroid-hit? (ship-hitbox ship) a)) asteroids)))
+    (if (> (length colliding-asteroids) 0)
+      (ship-alive-set! ship #f))))
+
         
 (define (update-all *level*)
   (let* ((ship (level-ship *level*))
@@ -95,5 +107,6 @@
          (lev-height (level-height *level*)))
     (apply-commands ship)
     (move-ship ship lev-width lev-height)
-    (move-asteroids (level-asteroids *level*) lev-width lev-height)))
+    (move-asteroids (level-asteroids *level*) lev-width lev-height)
+  (handle-collisions *level*)))
 

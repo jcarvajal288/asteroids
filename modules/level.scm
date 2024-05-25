@@ -1,7 +1,6 @@
 (define-module (level)
   #:pure
   #:use-module (scheme base)
-  #:use-module (hoot ffi)
   #:use-module (math vector)
   #:use-module (math rect)
   #:use-module (ship)
@@ -11,14 +10,15 @@
             level-width
             level-height
             level-ship
-            level-asteroids))
+            level-asteroids
+            destroy-ship!))
 
 (define-record-type <level>
   (make-level width height ship asteroids)
   level?
   (width level-width)
   (height level-height)
-  (ship level-ship)
+  (ship level-ship level-ship-set!)
   (asteroids level-asteroids))
 
 (define (make-default-level)
@@ -27,3 +27,6 @@
          (ship (make-default-ship width height))
          (asteroids (map (lambda (_) (build-asteroid width height)) (make-list 5 0))))
     (make-level width height ship asteroids)))
+
+(define (destroy-ship! *level*)
+  (level-ship-set! *level* 0))

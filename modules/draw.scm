@@ -55,7 +55,8 @@
 
 
 (define (draw-all-objects context level prev-time)
-  (draw-background context (level-width level) (level-height level))
-  (draw-ship context (level-ship level))
-  (draw-asteroids context (level-asteroids level)))
+  (let ((ship (level-ship level)))
+    (draw-background context (level-width level) (level-height level))
+    (if (ship-alive? ship) (draw-ship context (level-ship level)))
+    (draw-asteroids context (level-asteroids level))))
 
