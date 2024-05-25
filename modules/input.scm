@@ -5,7 +5,6 @@
   #:use-module (hoot ffi)
   #:use-module (dom event)
   #:use-module (math vector)
-  #:use-module (types)
   #:export (on-key-down
             on-key-up 
             command:accelerate-forward

@@ -7,7 +7,7 @@
   #:use-module (dom canvas)
   #:use-module (math)
   #:use-module (math rect)
-  #:use-module (types)
+  #:use-module (level)
   #:use-module (ship)
   #:use-module (asteroid)
   #:export (load-all-images draw-all-objects))
@@ -55,9 +55,7 @@
 
 
 (define (draw-all-objects context level prev-time)
-  (reset-transform! context)
   (draw-background context (level-width level) (level-height level))
-  (let ((ship (level-ship level)))
-    (draw-ship context ship))
+  (draw-ship context (level-ship level))
   (draw-asteroids context (level-asteroids level)))
 

@@ -11,7 +11,7 @@ modules = \
 	modules/math/vector.scm \
 	modules/draw.scm \
 	modules/input.scm \
-	modules/types.scm 
+	modules/level.scm 
 
 game.wasm: game.scm $(modules)
 	guild compile-wasm -L modules -o $@ $<

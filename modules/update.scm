@@ -3,7 +3,7 @@
   #:use-module (scheme base)
   #:use-module (scheme inexact)
   #:use-module (scheme write)
-  #:use-module (types)
+  #:use-module (level)
   #:use-module (ship)
   #:use-module (asteroid)
   #:use-module (input)

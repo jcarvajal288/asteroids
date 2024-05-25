@@ -17,8 +17,10 @@
         (math vector)
         (draw)
         (input)
-        (types)
+        (level)
         (update))
+
+(define dt (/ 1000.0 60.0)) ; aim for updating at 60Hz
 
 (define *level* (make-default-level))
 

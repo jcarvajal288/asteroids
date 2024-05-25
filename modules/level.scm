@@ -1,4 +1,4 @@
-(define-module (types)
+(define-module (level)
   #:pure
   #:use-module (scheme base)
   #:use-module (hoot ffi)
@@ -6,15 +6,12 @@
   #:use-module (math rect)
   #:use-module (ship)
   #:use-module (asteroid)
-  #:export (dt
-            make-default-level
+  #:export (make-default-level
             make-level
             level-width
             level-height
             level-ship
             level-asteroids))
-
-(define dt (/ 1000.0 60.0)) ; aim for updating at 60Hz
 
 (define-record-type <level>
   (make-level width height ship asteroids)
