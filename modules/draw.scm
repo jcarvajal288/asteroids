@@ -10,14 +10,17 @@
   #:use-module (level)
   #:use-module (ship)
   #:use-module (asteroid)
+  #:use-module (missile)
   #:export (load-all-images draw-all-objects))
 
 (define image:ship #f)
 (define image:asteroid-1 #f)
+(define image:missile #f)
 
 (define (load-all-images)
   (set! image:ship (make-image "assets/images/ship-1.png"))
-  (set! image:asteroid-1 (make-image "assets/images/asteroid2.png")))
+  (set! image:asteroid-1 (make-image "assets/images/asteroid2.png"))
+  (set! image:missile (make-image "assets/images/roc.png")))
 
 (define (draw-background context width height)
   (set-fill-color! context "#140c1c")
@@ -49,14 +52,25 @@
            (width (asteroid-width asteroid))
            (height (asteroid-height asteroid)))
       (draw-with-rotation context image:asteroid-1 (asteroid-heading asteroid)
-                  0 0 width height
-                  (rect-x ast-rect) (rect-y ast-rect) width height)))
+                          0 0 width height
+                          (rect-x ast-rect) (rect-y ast-rect) width height)))
   (for-each draw-asteroid asteroids))
 
+(define (draw-missiles context missiles)
+  (define (draw-missile missile)
+    (let* ((m-rect (missile-hitbox missile))
+           (width (missile-width missile))
+           (height (missile-height missile)))
+      (draw-with-rotation context image:missile (missile-heading missile)
+                          0 0 width height
+                          (rect-x m-rect) (rect-y m-rect) width height)))
+  (for-each draw-missile missiles))
 
-(define (draw-all-objects context level prev-time)
-  (let ((ship (level-ship level)))
-    (draw-background context (level-width level) (level-height level))
-    (if (ship-alive? ship) (draw-ship context (level-ship level)))
-    (draw-asteroids context (level-asteroids level))))
+
+(define (draw-all-objects context *level* prev-time)
+  (let ((ship (level-ship *level*)))
+    (draw-background context (level-width *level*) (level-height *level*))
+    (if (ship-alive? ship) (draw-ship context (level-ship *level*)))
+    (draw-missiles context (level-missiles *level*))
+    (draw-asteroids context (level-asteroids *level*))))
 

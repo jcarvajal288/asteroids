@@ -11,22 +11,22 @@
             level-height
             level-ship
             level-asteroids
-            destroy-ship!))
+            level-missiles
+            level-missiles-set!))
 
 (define-record-type <level>
-  (make-level width height ship asteroids)
+  (make-level width height ship asteroids missiles)
   level?
   (width level-width)
   (height level-height)
   (ship level-ship level-ship-set!)
-  (asteroids level-asteroids))
+  (asteroids level-asteroids)
+  (missiles level-missiles level-missiles-set!))
 
 (define (make-default-level)
   (let* ((width 1280.0)
          (height 1024.0)
          (ship (make-default-ship width height))
-         (asteroids (map (lambda (_) (build-asteroid width height)) (make-list 5 0))))
-    (make-level width height ship asteroids)))
-
-(define (destroy-ship! *level*)
-  (level-ship-set! *level* 0))
+         (asteroids (map (lambda (_) (build-asteroid width height)) (make-list 1 0)))
+         (missiles '()))
+    (make-level width height ship asteroids missiles)))

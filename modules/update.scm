@@ -7,6 +7,7 @@
   #:use-module (level)
   #:use-module (ship)
   #:use-module (asteroid)
+  #:use-module (missile)
   #:use-module (input)
   #:use-module (math)
   #:use-module (math rect)
@@ -46,11 +47,22 @@
     (ship-heading-set! ship clamped-heading)))
 
 
-(define (apply-commands ship)
+(define (fire-missile ship *level*)
+  (let* ((ship-rect (ship-hitbox ship))
+         (ship-center (cons (+ (rect-x ship-rect) (/ (ship-width ship) 2))
+                            (+ (rect-y ship-rect) (/ (ship-height ship) 2))))
+         (new-missile (build-missile (vec2 0.0 0.0) 
+                                     (ship-heading ship) 
+                                     ship-center)))
+    (level-missiles-set! *level* (append (list new-missile) (level-missiles *level*)))))
+
+
+(define (apply-commands ship *level*)
   (if command:accelerate-forward (accelerate-forward ship))
   (if command:accelerate-backward (accelerate-backward ship))
   (if command:rotate-left (rotate-left ship))
-  (if command:rotate-right (rotate-right ship)))
+  (if command:rotate-right (rotate-right ship))
+  (if command:fire-missile (fire-missile ship *level*)))
 
 (define (move hitbox velocity)
   (set-rect-x! hitbox (+ (rect-x hitbox) (vec2-x velocity)))
@@ -105,7 +117,7 @@
   (let* ((ship (level-ship *level*))
          (lev-width (level-width *level*))
          (lev-height (level-height *level*)))
-    (apply-commands ship)
+    (apply-commands ship *level*)
     (move-ship ship lev-width lev-height)
     (move-asteroids (level-asteroids *level*) lev-width lev-height)
   (handle-collisions *level*)))
