@@ -48,7 +48,7 @@
     (let* ((ast-rect (asteroid-hitbox asteroid))
            (width (asteroid-width asteroid))
            (height (asteroid-height asteroid)))
-      (draw-image context image:asteroid-1
+      (draw-with-rotation context image:asteroid-1 (asteroid-heading asteroid)
                   0 0 width height
                   (rect-x ast-rect) (rect-y ast-rect) width height)))
   (for-each draw-asteroid asteroids))

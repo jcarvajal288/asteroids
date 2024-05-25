@@ -8,15 +8,18 @@
             asteroid-width
             asteroid-height
             asteroid-velocity
+            asteroid-heading
+            asteroid-heading-set!
             asteroid-rotation-speed
             asteroid-hitbox))
 
 (define-record-type <asteroid>
-  (make-asteroid width height velocity rotation-speed hitbox)
+  (make-asteroid width height velocity heading rotation-speed hitbox)
   asteroid?
   (width asteroid-width)
   (height asteroid-height)
   (velocity asteroid-velocity)
+  (heading asteroid-heading asteroid-heading-set!)
   (rotation-speed asteroid-rotation-speed)
   (hitbox asteroid-hitbox))
 
@@ -24,9 +27,10 @@
   (let* ((width 71)
          (height 69)
          (velocity (vec2 (- (random-float 1 10) 5) (- (random-float 1 10) 5)))
+         (heading (random-float 0 360))
          (rotation-speed (random-float 0 2))
          (hitbox (make-rect (random-float 0 level-width)
                             level-height
                             width
                             height)))
-  (make-asteroid width height velocity rotation-speed hitbox)))
+  (make-asteroid width height velocity heading rotation-speed hitbox)))

@@ -66,6 +66,7 @@
     (let ((hitbox (asteroid-hitbox asteroid))
           (velocity (asteroid-velocity asteroid)))
       (move hitbox velocity)
+      (asteroid-heading-set! asteroid (+ (asteroid-heading asteroid) (asteroid-rotation-speed asteroid)))
       (edge-warp hitbox lev-width lev-height)))
   (for-each move-func asteroids))
 
