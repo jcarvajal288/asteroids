@@ -23,7 +23,7 @@
 (define (build-asteroid level-width level-height)
   (let* ((width 71)
          (height 69)
-         (velocity (vec2 (random-float 1 5) (random-float 1 5)))
+         (velocity (vec2 (- (random-float 1 10) 5) (- (random-float 1 10) 5)))
          (rotation-speed (random-float 0 2))
          (hitbox (make-rect (/ level-width 2)
                             level-height
