@@ -9,6 +9,7 @@
   #:use-module (math rect)
   #:use-module (types)
   #:use-module (ship)
+  #:use-module (asteroid)
   #:export (load-all-images draw-all-objects))
 
 (define image:ship #f)
@@ -16,7 +17,7 @@
 
 (define (load-all-images)
   (set! image:ship (make-image "assets/images/ship-1.png"))
-  (set! image:asteroid-1 (make-image "assets/images/asteroid1.png")))
+  (set! image:asteroid-1 (make-image "assets/images/asteroid2.png")))
 
 (define (draw-background context width height)
   (set-fill-color! context "#140c1c")
@@ -42,16 +43,21 @@
                         0 0 width height
                         (rect-x ship-rect) (rect-y ship-rect) width height)))
 
+(define (draw-asteroids context asteroids)
+  (define (draw-asteroid asteroid)
+    (let* ((ast-rect (asteroid-hitbox asteroid))
+           (width (asteroid-width asteroid))
+           (height (asteroid-height asteroid)))
+      (draw-image context image:asteroid-1
+                  0 0 width height
+                  (rect-x ast-rect) (rect-y ast-rect) width height)))
+  (for-each draw-asteroid asteroids))
 
-(define (draw-asteroids context)
-  (draw-image context image:asteroid-1
-              0 0 130 130
-              30 30 130 130))
 
 (define (draw-all-objects context level prev-time)
   (reset-transform! context)
   (draw-background context (level-width level) (level-height level))
   (let ((ship (level-ship level)))
     (draw-ship context ship))
-  (draw-asteroids context))
+  (draw-asteroids context (level-asteroids level)))
 

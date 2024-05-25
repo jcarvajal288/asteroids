@@ -37,7 +37,7 @@
   #:pure
   #:use-module (scheme base)
   #:use-module (hoot ffi)
-  #:export (PI to-radians random clamp))
+  #:export (PI to-radians random random-float clamp))
 
 (define PI 3.14159265)
 
@@ -47,6 +47,9 @@
 (define-foreign random
   "math" "random"
   -> f64)
+
+(define (random-float min max)
+  (* (random) (+ min (- max (+ min 1)))))
 
 (define (clamp x min max)
   (cond ((< x min) min)
