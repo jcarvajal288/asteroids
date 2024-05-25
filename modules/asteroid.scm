@@ -25,7 +25,7 @@
          (height 69)
          (velocity (vec2 (- (random-float 1 10) 5) (- (random-float 1 10) 5)))
          (rotation-speed (random-float 0 2))
-         (hitbox (make-rect (/ level-width 2)
+         (hitbox (make-rect (random-float 0 level-width)
                             level-height
                             width
                             height)))
