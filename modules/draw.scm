@@ -63,7 +63,7 @@
     (let* ((ast-rect (asteroid-hitbox asteroid))
            (width (asteroid-width asteroid))
            (height (asteroid-height asteroid))
-           (asteroid-image (match (asteroid-size asteroid)
+           (asteroid-image (match (asteroid-type asteroid)
                                   ('small image:asteroid-s)
                                   ('medium image:asteroid-m)
                                   ('large image:asteroid-l)
@@ -96,7 +96,7 @@
 
 (define (display-game-over context width height)
   (set-fill-color! context "#FFFFFF")
-  (set-font! context "bold 200px monospace")
+  (set-font! context "bold 175px monospace")
   (set-text-align! context "center")
   (fill-text context "GAME OVER" (/ width 2.0) (/ height 2.0)))
 

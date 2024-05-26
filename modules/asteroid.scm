@@ -14,7 +14,7 @@
             build-ore-at
             asteroid-width
             asteroid-height
-            asteroid-size
+            asteroid-type
             asteroid-velocity
             asteroid-heading
             asteroid-heading-set!
@@ -22,12 +22,17 @@
             asteroid-rotation-speed
             asteroid-hitbox))
 
+(define ore-value 500)
+(define small-asteroid-value 100)
+(define medium-asteroid-value 50)
+(define large-asteroid-value 25)
+
 (define-record-type <asteroid>
-  (make-asteroid width height size velocity heading rotation-speed score-value hitbox)
+  (make-asteroid width height type velocity heading rotation-speed score-value hitbox)
   asteroid?
   (width asteroid-width)
   (height asteroid-height)
-  (size asteroid-size)
+  (type asteroid-type)
   (velocity asteroid-velocity)
   (heading asteroid-heading asteroid-heading-set!)
   (rotation-speed asteroid-rotation-speed)
@@ -37,11 +42,10 @@
 (define (build-small-asteroid level-width level-height)
   (let* ((width 68)
          (height 58)
-         (size 'small)
-         (velocity (vec2-of-length (random-float 0 360) (random-float 4 10)))
+         (type 'small)
+         (velocity (vec2-of-length (random-float 0 360) (random-float 4 8)))
          (heading (random-float 0 360))
          (rotation-speed (random-float 0 4))
-         (score-value 250)
          (hitbox (if (> (random) 0.5)
                    (make-rect (random-float 0 level-width)
                                level-height
@@ -51,16 +55,15 @@
                               (random-float 0 level-height)
                               width
                               height))))
-  (make-asteroid width height size velocity heading rotation-speed score-value hitbox)))
+  (make-asteroid width height type velocity heading rotation-speed small-asteroid-value hitbox)))
 
 (define (build-medium-asteroid level-width level-height)
   (let* ((width 71)
          (height 69)
-         (size 'medium)
+         (type 'medium)
          (velocity (vec2-of-length (random-float 0 360) (random-float 1 5)))
          (heading (random-float 0 360))
          (rotation-speed (random-float 0 2))
-         (score-value 100)
          (hitbox (if (> (random) 0.5)
                    (make-rect (random-float 0 level-width)
                                level-height
@@ -70,16 +73,15 @@
                               (random-float 0 level-height)
                               width
                               height))))
-  (make-asteroid width height size velocity heading rotation-speed score-value hitbox)))
+  (make-asteroid width height type velocity heading rotation-speed medium-asteroid-value hitbox)))
 
 (define (build-large-asteroid level-width level-height)
   (let* ((width 91)
          (height 86)
-         (size 'large)
+         (type 'large)
          (velocity (vec2 (- (random-float 0.5 5) 2.5) (- (random-float 0.5 5) 2.5)))
          (heading (random-float 0 360))
          (rotation-speed (random-float 0 2))
-         (score-value 50)
          (hitbox (if (> (random) 0.5)
                    (make-rect (random-float 0 level-width)
                                level-height
@@ -89,7 +91,7 @@
                               (random-float 0 level-height)
                               width
                               height))))
-  (make-asteroid width height size velocity heading rotation-speed score-value hitbox)))
+  (make-asteroid width height type velocity heading rotation-speed large-asteroid-value hitbox)))
 
 (define (build-random-asteroid level-width level-height)
   (let ((selection (random-float 0 3)))
@@ -103,43 +105,40 @@
 (define (build-medium-asteroid-at x y)
   (let* ((width 71)
          (height 69)
-         (size 'medium)
+         (type 'medium)
          (velocity (vec2-of-length (random-float 0 360) (random-float 1 5)))
          (heading (random-float 0 360))
          (rotation-speed (random-float 0 2))
-         (score-value 100)
          (hitbox (make-rect x y width height)))
-  (make-asteroid width height size velocity heading rotation-speed score-value hitbox)))
+  (make-asteroid width height type velocity heading rotation-speed medium-asteroid-value hitbox)))
 
 (define (build-small-asteroid-at x y)
   (let* ((width 48)
          (height 46)
-         (size 'small)
-         (velocity (vec2-of-length (random-float 0 360) (random-float 4 10)))
+         (type 'small)
+         (velocity (vec2-of-length (random-float 0 360) (random-float 4 8)))
          (heading (random-float 0 360))
          (rotation-speed (random-float 0 4))
-         (score-value 200)
          (hitbox (make-rect x y width height)))
-  (make-asteroid width height size velocity heading rotation-speed score-value hitbox)))
+  (make-asteroid width height type velocity heading rotation-speed small-asteroid-value hitbox)))
 
 (define (build-debris-at x y)
   (let* ((width 10)
          (height 9)
-         (size 'debris)
+         (type 'debris)
          (velocity (vec2-of-length (random-float 0 360) (random-float 4 12)))
          (heading (random-float 0 360))
          (rotation-speed (random-float 2 6))
          (score-value 0)
          (hitbox (make-rect x y width height)))
-  (make-asteroid width height size velocity heading rotation-speed score-value hitbox)))
+  (make-asteroid width height type velocity heading rotation-speed score-value hitbox)))
 
 (define (build-ore-at x y)
   (let* ((width 15)
          (height 14)
-         (size 'ore)
+         (type 'ore)
          (velocity (vec2-of-length (random-float 0 360) (random-float 4 12)))
          (heading (random-float 0 360))
          (rotation-speed (random-float 2 5))
-         (score-value 300)
          (hitbox (make-rect x y width height)))
-  (make-asteroid width height size velocity heading rotation-speed score-value hitbox)))
+  (make-asteroid width height type velocity heading rotation-speed ore-value hitbox)))

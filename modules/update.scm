@@ -180,11 +180,11 @@
     (let* ((hitbox (asteroid-hitbox asteroid))
            (x (rect-x hitbox))
            (y (rect-y hitbox))
-           (size (asteroid-size asteroid)))
+           (type (asteroid-type asteroid)))
       (cond 
-        ((eqv? size 'large)
+        ((eqv? type 'large)
           (add-asteroids *level* (map (lambda (_) (build-medium-asteroid-at x y)) (make-list 2 0))))
-        ((eqv? size 'medium)
+        ((eqv? type 'medium)
           (add-asteroids *level* (map (lambda (_) (build-small-asteroid-at x y)) (make-list 2 0))))
         (else 
           (add-ore *level* (map (lambda (_) (build-ore-at x y)) (make-list 2 0)))))))
