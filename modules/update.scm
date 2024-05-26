@@ -142,7 +142,11 @@
 (define (handle-ship-collisions *level*)
   (let* ((ship (level-ship *level*))
          (asteroids (level-asteroids *level*))
-         (colliding-asteroids (filter (lambda (a) (asteroid-collides? (ship-hitbox ship) a)) asteroids)))
+         (ore (level-ore *level*))
+         (colliding-asteroids (filter (lambda (a) (asteroid-collides? (ship-hitbox ship) a)) asteroids))
+         (non-colliding-ore (filter (lambda (a) (not (asteroid-collides? (ship-hitbox ship) a))) ore)))
+    (if (< (length non-colliding-ore) (length (level-ore *level*)))
+      (score-ore *level* non-colliding-ore))
     (if (and (> (length colliding-asteroids) 0) (ship-alive? ship))
       (kill-player ship *level*))))
 

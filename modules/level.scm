@@ -21,7 +21,8 @@
             check-for-new-asteroid
             kill-player
             add-asteroids
-            add-ore))
+            add-ore
+            score-ore))
 
 (define default-asteroid-timer 300)
 
@@ -42,7 +43,7 @@
          (height 1024.0)
          (ship (make-default-ship width height))
          (score 0)
-         (asteroids (map (lambda (_) (build-large-asteroid width height)) (make-list 3 0)))
+         (asteroids (map (lambda (_) (build-large-asteroid width height)) (make-list 4 0)))
          (missiles '())
          (ore '()))
     (make-level width height ship score default-asteroid-timer asteroids ore missiles)))
@@ -72,3 +73,9 @@
 
 (define (add-ore *level* ore)
   (level-ore-set! *level* (append ore (level-ore *level*))))
+
+(define (score-ore *level* non-colliding-ore)
+  (let* ((score-per-ore (asteroid-score-value (car non-colliding-ore)))
+         (new-points (* (- (length (level-ore *level*)) (length non-colliding-ore)) score-per-ore)))
+    (level-score-set! *level* (+ (level-score *level*) new-points))
+    (level-ore-set! *level* non-colliding-ore)))
