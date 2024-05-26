@@ -23,7 +23,7 @@
 (define image:debris #f)
 
 (define (load-all-images)
-  (set! image:background (make-image "assets/images/blueNebula1.png"))
+  (set! image:background (make-image "assets/images/blueNebula1.jpg"))
   (set! image:ship (make-image "assets/images/ship-1.png"))
   (set! image:asteroid-s (make-image "assets/images/smallAsteroid1.png"))
   (set! image:asteroid-m (make-image "assets/images/mediumAsteroid1.png"))
