@@ -42,12 +42,13 @@
     (make-level width height ship score default-asteroid-timer asteroids missiles)))
 
 (define (add-score-for-asteroids *level* asteroids)
-  (let ((new-points (apply + (map asteroid-score-value asteroids))))
-    (level-score-set! *level* (+ (level-score *level*) new-points))))
+  (if (ship-alive? (level-ship *level*))
+    (let ((new-points (apply + (map asteroid-score-value asteroids))))
+      (level-score-set! *level* (+ (level-score *level*) new-points)))))
 
 (define (check-for-new-asteroid *level*)
   (level-new-asteroid-timer-set! *level* (- (level-new-asteroid-timer *level*) 1))
-  (if (<= (level-new-asteroid-timer *level*) 0)
+  (if (and (<= (level-new-asteroid-timer *level*) 0) (ship-alive? (level-ship *level*)))
     (let ((new-asteroid (build-asteroid (level-width *level*) (level-height *level*))))
       (level-asteroids-set! *level* (append (list new-asteroid) (level-asteroids *level*)))
     (level-new-asteroid-timer-set! *level* default-asteroid-timer))))
