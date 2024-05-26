@@ -72,13 +72,28 @@
   (set-text-align! context "center")
   (fill-text context "GAME OVER" (/ width 2.0) (/ height 2.0)))
 
+(define (display-score context score)
+  (set-fill-color! context "#FFFFFF")
+  (set-font! context "bold 24px monospace")
+  (set-text-align! context "left")
+  (fill-text context "SCORE:" 16.0 36.0)
+  (fill-text context (number->string score) 108.0 36.0))
+
+(define (draw-ui context *level*)
+  (let ((game-over? (not (ship-alive? (level-ship *level*))))
+        (width (level-width *level*))
+        (height (level-height *level*)))
+    (display-score context (level-score *level*))
+    (if game-over? (display-game-over context width height))))
+
 
 (define (draw-all-objects context *level* prev-time)
-  (let ((ship (level-ship *level*)))
-    (draw-background context (level-width *level*) (level-height *level*))
+  (let ((ship (level-ship *level*))
+        (width (level-width *level*))
+        (height (level-height *level*)))
+    (draw-background context width height)
     (if (ship-alive? ship) (draw-ship context (level-ship *level*)))
     (draw-missiles context (level-missiles *level*))
     (draw-asteroids context (level-asteroids *level*))
-    (if (not (ship-alive? ship))
-      (display-game-over context (level-width *level*) (level-height *level*)))))
+    (draw-ui context *level*)))
 
