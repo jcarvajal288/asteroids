@@ -141,7 +141,8 @@
   (let* ((missiles (level-missiles *level*))
          (ship-rect (ship-hitbox (level-ship *level*)))
          (asteroids (level-asteroids *level*))
-         ;; so much redundant searching but it's the last day and I gotta finish aaaaaaaaa
+         ;; so much redundant searching because hoot doesn't have a remove function
+         ;; but it's the last day and I gotta finish aaaaaaaaa
          (colliding-asteroids (filter (lambda (a) (asteroid-hit-missile? a missiles))
                                         asteroids))
          (non-colliding-asteroids (filter (lambda (a) (not (asteroid-hit-missile? a missiles)))
@@ -151,12 +152,15 @@
          (missiles-hitting-player (filter is-armed? 
                                           (filter (lambda (m) (missile-collides? ship-rect m)) 
                                                   missiles))))
-    (if (> (length missiles-hitting-player) 0)
-      (ship-alive-set! (level-ship *level*) #f))
     (add-score-for-asteroids *level* colliding-asteroids)
     (level-asteroids-set! *level* non-colliding-asteroids)
     (break-up-destroyed-asteroids *level* colliding-asteroids)
-    (level-missiles-set! *level* non-colliding-missiles)))
+    (level-missiles-set! *level* non-colliding-missiles)
+    (if (> (length missiles-hitting-player) 0)
+      (let ((missiles-missing-player (filter (lambda (m) (not (missile-collides? ship-rect m)))
+                                            missiles)))
+        (ship-alive-set! (level-ship *level*) #f)
+        (level-missiles-set! *level* missiles-missing-player)))))
 
 (define (break-up-destroyed-asteroids *level* asteroids)
   (define (break-up-asteroid *level* asteroid)

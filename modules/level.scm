@@ -49,6 +49,6 @@
 (define (check-for-new-asteroid *level*)
   (level-new-asteroid-timer-set! *level* (- (level-new-asteroid-timer *level*) 1))
   (if (and (<= (level-new-asteroid-timer *level*) 0) (ship-alive? (level-ship *level*)))
-    (let ((new-asteroid (build-medium-asteroid (level-width *level*) (level-height *level*))))
+    (let ((new-asteroid (build-random-asteroid (level-width *level*) (level-height *level*))))
       (level-asteroids-set! *level* (append (list new-asteroid) (level-asteroids *level*)))
     (level-new-asteroid-timer-set! *level* default-asteroid-timer))))
