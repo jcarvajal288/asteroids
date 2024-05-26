@@ -17,7 +17,8 @@
             level-missiles
             level-missiles-set!
             add-score-for-asteroids
-            check-for-new-asteroid))
+            check-for-new-asteroid
+            kill-player))
 
 (define default-asteroid-timer 300)
 
@@ -52,3 +53,11 @@
     (let ((new-asteroid (build-random-asteroid (level-width *level*) (level-height *level*))))
       (level-asteroids-set! *level* (append (list new-asteroid) (level-asteroids *level*)))
     (level-new-asteroid-timer-set! *level* default-asteroid-timer))))
+
+(define (kill-player ship *level*)
+  (ship-alive-set! ship #f)
+  (spawn-debris (rect-x (ship-hitbox ship)) (rect-y (ship-hitbox ship)) *level*))
+
+(define (spawn-debris x y *level*)
+  (let ((debris (map (lambda (_) (build-debris-at x y)) (make-list 5 0))))
+    (level-asteroids-set! *level* (append debris (level-asteroids *level*)))))

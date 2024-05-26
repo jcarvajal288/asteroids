@@ -134,8 +134,8 @@
   (let* ((ship (level-ship *level*))
          (asteroids (level-asteroids *level*))
          (colliding-asteroids (filter (lambda (a) (asteroid-collides? (ship-hitbox ship) a)) asteroids)))
-    (if (> (length colliding-asteroids) 0)
-      (ship-alive-set! ship #f))))
+    (if (and (> (length colliding-asteroids) 0) (ship-alive? ship))
+      (kill-player ship *level*))))
 
 (define (handle-missile-collisions *level*)
   (let* ((missiles (level-missiles *level*))
@@ -156,10 +156,10 @@
     (level-asteroids-set! *level* non-colliding-asteroids)
     (break-up-destroyed-asteroids *level* colliding-asteroids)
     (level-missiles-set! *level* non-colliding-missiles)
-    (if (> (length missiles-hitting-player) 0)
+    (if (and (> (length missiles-hitting-player) 0) (ship-alive? (level-ship *level*)))
       (let ((missiles-missing-player (filter (lambda (m) (not (missile-collides? ship-rect m)))
                                             missiles)))
-        (ship-alive-set! (level-ship *level*) #f)
+        (kill-player (level-ship *level*) *level*)
         (level-missiles-set! *level* missiles-missing-player)))))
 
 (define (break-up-destroyed-asteroids *level* asteroids)

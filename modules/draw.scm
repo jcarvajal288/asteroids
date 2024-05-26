@@ -20,6 +20,7 @@
 (define image:asteroid-m #f)
 (define image:asteroid-l #f)
 (define image:missile #f)
+(define image:debris #f)
 
 (define (load-all-images)
   (set! image:background (make-image "assets/images/blueNebula1.png"))
@@ -27,7 +28,8 @@
   (set! image:asteroid-s (make-image "assets/images/smallAsteroid1.png"))
   (set! image:asteroid-m (make-image "assets/images/mediumAsteroid1.png"))
   (set! image:asteroid-l (make-image "assets/images/largeAsteroid1.png"))
-  (set! image:missile (make-image "assets/images/roc.png")))
+  (set! image:missile (make-image "assets/images/roc.png"))
+  (set! image:debris (make-image "assets/images/debris.png")))
 
 (define (draw-background context width height)
   (draw-image context image:background
@@ -62,7 +64,8 @@
            (asteroid-image (match (asteroid-size asteroid)
                                   ('small image:asteroid-s)
                                   ('medium image:asteroid-m)
-                                  ('large image:asteroid-l))))
+                                  ('large image:asteroid-l)
+                                  ('debris image:debris))))
       (draw-with-rotation context asteroid-image (asteroid-heading asteroid)
                           0 0 width height
                           (rect-x ast-rect) (rect-y ast-rect) width height)))

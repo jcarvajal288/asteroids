@@ -10,6 +10,7 @@
             build-medium-asteroid-at
             build-large-asteroid
             build-random-asteroid
+            build-debris-at
             asteroid-width
             asteroid-height
             asteroid-size
@@ -119,3 +120,15 @@
          (score-value 250)
          (hitbox (make-rect x y width height)))
   (make-asteroid width height size velocity heading rotation-speed score-value hitbox)))
+
+(define (build-debris-at x y)
+  (let* ((width 10)
+         (height 9)
+         (size 'debris)
+         (velocity (vec2 (- (random-float 4 12) 6) (- (random-float 4 12) 6)))
+         (heading (random-float 0 360))
+         (rotation-speed (random-float 2 6))
+         (score-value 0)
+         (hitbox (make-rect x y width height)))
+  (make-asteroid width height size velocity heading rotation-speed score-value hitbox)))
+
