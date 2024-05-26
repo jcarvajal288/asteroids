@@ -37,7 +37,7 @@
          (height 1024.0)
          (ship (make-default-ship width height))
          (score 0)
-         (asteroids (map (lambda (_) (build-asteroid width height)) (make-list 10 0)))
+         (asteroids (map (lambda (_) (build-small-asteroid width height)) (make-list 10 0)))
          (missiles '()))
     (make-level width height ship score default-asteroid-timer asteroids missiles)))
 
@@ -49,6 +49,6 @@
 (define (check-for-new-asteroid *level*)
   (level-new-asteroid-timer-set! *level* (- (level-new-asteroid-timer *level*) 1))
   (if (and (<= (level-new-asteroid-timer *level*) 0) (ship-alive? (level-ship *level*)))
-    (let ((new-asteroid (build-asteroid (level-width *level*) (level-height *level*))))
+    (let ((new-asteroid (build-medium-asteroid (level-width *level*) (level-height *level*))))
       (level-asteroids-set! *level* (append (list new-asteroid) (level-asteroids *level*)))
     (level-new-asteroid-timer-set! *level* default-asteroid-timer))))
