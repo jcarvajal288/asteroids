@@ -112,8 +112,8 @@
   (make-asteroid width height size velocity heading rotation-speed score-value hitbox)))
 
 (define (build-small-asteroid-at x y)
-  (let* ((width 68)
-         (height 58)
+  (let* ((width 48)
+         (height 46)
          (size 'small)
          (velocity (vec2 (- (random-float 4 12) 6) (- (random-float 4 12) 6)))
          (heading (random-float 0 360))

@@ -24,7 +24,7 @@
             add-ore
             score-ore))
 
-(define default-asteroid-timer 300)
+(define default-asteroid-timer 600)
 
 (define-record-type <level>
   (make-level width height ship score new-asteroid-timer asteroids ore missiles)
@@ -43,7 +43,7 @@
          (height 1024.0)
          (ship (make-default-ship width height))
          (score 0)
-         (asteroids (map (lambda (_) (build-large-asteroid width height)) (make-list 4 0)))
+         (asteroids (map (lambda (_) (build-large-asteroid width height)) (make-list 3 0)))
          (missiles '())
          (ore '()))
     (make-level width height ship score default-asteroid-timer asteroids ore missiles)))
