@@ -83,6 +83,15 @@
       (edge-warp hitbox lev-width lev-height)))
   (for-each move-func asteroids))
 
+(define (move-ore ores lev-width lev-height)
+  (define (move-func ore)
+    (let ((hitbox (asteroid-hitbox ore))
+          (velocity (asteroid-velocity ore)))
+      (move hitbox velocity)
+      (asteroid-heading-set! ore (+ (asteroid-heading ore) (asteroid-rotation-speed ore)))
+      (edge-warp hitbox lev-width lev-height)))
+  (for-each move-func ores))
+
 (define (move-missiles missiles lev-width lev-height)
   (define (move-func missile)
     (let ((hitbox (missile-hitbox missile))
@@ -163,18 +172,19 @@
         (level-missiles-set! *level* missiles-missing-player)))))
 
 (define (break-up-destroyed-asteroids *level* asteroids)
-  (define (break-up-asteroid *level* asteroid)
+  (define (break-up-asteroid asteroid *level*)
     (let* ((hitbox (asteroid-hitbox asteroid))
            (x (rect-x hitbox))
            (y (rect-y hitbox))
-           (size (asteroid-size asteroid))
-           (new-asteroids (cond ((eqv? size 'large)
-                                   (map (lambda (_) (build-medium-asteroid-at x y)) (make-list 2 0)))
-                                ((eqv? size 'medium)
-                                   (map (lambda (_) (build-small-asteroid-at x y)) (make-list 2 0)))
-                                (else '()))))
-      (level-asteroids-set! *level* (append new-asteroids (level-asteroids *level*)))))
-  (for-each (lambda (a) (break-up-asteroid *level* a)) asteroids))
+           (size (asteroid-size asteroid)))
+      (cond 
+        ((eqv? size 'large)
+          (add-asteroids *level* (map (lambda (_) (build-medium-asteroid-at x y)) (make-list 2 0))))
+        ((eqv? size 'medium)
+          (add-asteroids *level* (map (lambda (_) (build-small-asteroid-at x y)) (make-list 2 0))))
+        (else 
+          (add-ore *level* (map (lambda (_) (build-ore-at x y)) (make-list 2 0)))))))
+  (for-each (lambda (a) (break-up-asteroid a *level*)) asteroids))
 
         
 (define (update-all *level*)
@@ -185,6 +195,7 @@
     (move-ship ship lev-width lev-height)
     (progress-fire-cooldown ship)
     (move-asteroids (level-asteroids *level*) lev-width lev-height)
+    (move-ore (level-ore *level*) lev-width lev-height)
     (move-missiles (level-missiles *level*) lev-width lev-height))
   (handle-ship-collisions *level*)
   (handle-missile-collisions *level*)

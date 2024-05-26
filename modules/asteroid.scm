@@ -11,6 +11,7 @@
             build-large-asteroid
             build-random-asteroid
             build-debris-at
+            build-ore-at
             asteroid-width
             asteroid-height
             asteroid-size
@@ -117,7 +118,7 @@
          (velocity (vec2 (- (random-float 4 12) 6) (- (random-float 4 12) 6)))
          (heading (random-float 0 360))
          (rotation-speed (random-float 0 4))
-         (score-value 250)
+         (score-value 200)
          (hitbox (make-rect x y width height)))
   (make-asteroid width height size velocity heading rotation-speed score-value hitbox)))
 
@@ -132,3 +133,13 @@
          (hitbox (make-rect x y width height)))
   (make-asteroid width height size velocity heading rotation-speed score-value hitbox)))
 
+(define (build-ore-at x y)
+  (let* ((width 15)
+         (height 14)
+         (size 'ore)
+         (velocity (vec2 (- (random-float 4 10) 6) (- (random-float 4 10) 6)))
+         (heading (random-float 0 360))
+         (rotation-speed (random-float 2 5))
+         (score-value 300)
+         (hitbox (make-rect x y width height)))
+  (make-asteroid width height size velocity heading rotation-speed score-value hitbox)))

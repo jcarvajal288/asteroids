@@ -21,6 +21,7 @@
 (define image:asteroid-l #f)
 (define image:missile #f)
 (define image:debris #f)
+(define image:ore #f)
 
 (define (load-all-images)
   (set! image:background (make-image "assets/images/blueNebula1.jpg"))
@@ -29,7 +30,8 @@
   (set! image:asteroid-m (make-image "assets/images/mediumAsteroid1.png"))
   (set! image:asteroid-l (make-image "assets/images/largeAsteroid1.png"))
   (set! image:missile (make-image "assets/images/roc.png"))
-  (set! image:debris (make-image "assets/images/debris.png")))
+  (set! image:debris (make-image "assets/images/debris.png"))
+  (set! image:ore (make-image "assets/images/ore_0.png")))
 
 (define (draw-background context width height)
   (draw-image context image:background
@@ -65,11 +67,22 @@
                                   ('small image:asteroid-s)
                                   ('medium image:asteroid-m)
                                   ('large image:asteroid-l)
-                                  ('debris image:debris))))
+                                  ('debris image:debris)
+                                  ('ore image:ore))))
       (draw-with-rotation context asteroid-image (asteroid-heading asteroid)
                           0 0 width height
                           (rect-x ast-rect) (rect-y ast-rect) width height)))
   (for-each draw-asteroid asteroids))
+
+(define (draw-ore context ores)
+  (define (draw-func ore)
+    (let* ((m-rect (asteroid-hitbox ore))
+           (width (asteroid-width ore))
+           (height (asteroid-height ore)))
+      (draw-with-rotation context image:ore (asteroid-heading ore)
+                          0 0 width height
+                          (rect-x m-rect) (rect-y m-rect) width height)))
+  (for-each draw-func ores))
 
 (define (draw-missiles context missiles)
   (define (draw-missile missile)
@@ -110,5 +123,6 @@
     (if (ship-alive? ship) (draw-ship context (level-ship *level*)))
     (draw-missiles context (level-missiles *level*))
     (draw-asteroids context (level-asteroids *level*))
+    (draw-ore context (level-ore *level*))
     (draw-ui context *level*)))
 
