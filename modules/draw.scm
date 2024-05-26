@@ -13,18 +13,21 @@
   #:use-module (missile)
   #:export (load-all-images draw-all-objects))
 
+(define image:background #f)
 (define image:ship #f)
 (define image:asteroid-1 #f)
 (define image:missile #f)
 
 (define (load-all-images)
+  (set! image:background (make-image "assets/images/blueNebula1.png"))
   (set! image:ship (make-image "assets/images/ship-1.png"))
   (set! image:asteroid-1 (make-image "assets/images/asteroid2.png"))
   (set! image:missile (make-image "assets/images/roc.png")))
 
 (define (draw-background context width height)
-  (set-fill-color! context "#140c1c")
-  (fill-rect context 0.0 0.0 width height))
+  (draw-image context image:background
+              0 0 width height
+              0 0 width height))
 
 (define (draw-with-rotation context image heading sx sy sw sh dx dy dw dh)
   (let ((center-x (+ dx (/ dw 2)))
