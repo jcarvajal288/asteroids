@@ -68,7 +68,7 @@
 
 (define (display-game-over context width height)
   (set-fill-color! context "#FFFFFF")
-  (set-font! context "bold 24px monospace")
+  (set-font! context "bold 200px monospace")
   (set-text-align! context "center")
   (fill-text context "GAME OVER" (/ width 2.0) (/ height 2.0)))
 
