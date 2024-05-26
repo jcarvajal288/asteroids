@@ -66,11 +66,19 @@
                           (rect-x m-rect) (rect-y m-rect) width height)))
   (for-each draw-missile missiles))
 
+(define (display-game-over context width height)
+  (set-fill-color! context "#FFFFFF")
+  (set-font! context "bold 24px monospace")
+  (set-text-align! context "center")
+  (fill-text context "GAME OVER" (/ width 2.0) (/ height 2.0)))
+
 
 (define (draw-all-objects context *level* prev-time)
   (let ((ship (level-ship *level*)))
     (draw-background context (level-width *level*) (level-height *level*))
     (if (ship-alive? ship) (draw-ship context (level-ship *level*)))
     (draw-missiles context (level-missiles *level*))
-    (draw-asteroids context (level-asteroids *level*))))
+    (draw-asteroids context (level-asteroids *level*))
+    (if (not (ship-alive? ship))
+      (display-game-over context (level-width *level*) (level-height *level*)))))
 
