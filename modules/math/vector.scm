@@ -39,7 +39,8 @@
             vec2-magnitude
             vec2-normalize!
             vec2-clamp!
-            vec2-limit!))
+            vec2-limit!
+            vec2-of-length))
 
 ;; For speed, a vec2 is a wrapper around a bytevector so that we can
 ;; use unboxed floats.
@@ -99,3 +100,9 @@
          (reduction-length (- v-mag max-length)))
     (if (> reduction-length 0)
         (vec2-mul-scalar! v (- 1 (/ reduction-length v-mag))))))
+
+(define (vec2-of-length heading len)
+  (let ((heading-in-radians (to-radians heading)))
+    (vec2 (* len (sin heading-in-radians))
+          (- (* len (cos heading-in-radians)))))) ; negative because positive y is towards the bottom
+

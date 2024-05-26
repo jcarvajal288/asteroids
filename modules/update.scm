@@ -16,10 +16,7 @@
   #:export (update-all))
 
 (define (get-thrust-vector heading acceleration)
-  (let ((heading-in-radians (to-radians heading)))
-    (vec2 (* acceleration (sin heading-in-radians))
-          (- (* acceleration (cos heading-in-radians)))))) ; negative because positive y is towards the bottom
-
+    (vec2-of-length heading acceleration))
 
 (define (accelerate-forward ship) 
   (let* ((ship-vel (ship-velocity ship))
@@ -51,7 +48,7 @@
   (let* ((ship-rect (ship-hitbox ship))
          (ship-center (cons (+ (rect-x ship-rect) (/ (ship-width ship) 2))
                             (+ (rect-y ship-rect) (/ (ship-height ship) 2))))
-         (new-missile (build-missile (vec2 0.0 0.0) 
+         (new-missile (build-missile (ship-velocity ship) 
                                      (ship-heading ship) 
                                      ship-center)))
     (level-missiles-set! *level* (append (list new-missile) (level-missiles *level*)))
@@ -84,6 +81,15 @@
       (asteroid-heading-set! asteroid (+ (asteroid-heading asteroid) (asteroid-rotation-speed asteroid)))
       (edge-warp hitbox lev-width lev-height)))
   (for-each move-func asteroids))
+
+(define (move-missiles missiles lev-width lev-height)
+  (define (move-func missile)
+    (let ((hitbox (missile-hitbox missile))
+          (velocity (missile-velocity missile)))
+      (move hitbox velocity)
+      (edge-warp hitbox lev-width lev-height)))
+  (for-each move-func missiles))
+
 
 (define (edge-warp hitbox width height)
   (let* ((northernmost (rect-y hitbox))
@@ -123,5 +129,6 @@
     (move-ship ship lev-width lev-height)
     (progress-fire-cooldown ship)
     (move-asteroids (level-asteroids *level*) lev-width lev-height)
+    (move-missiles (level-missiles *level*) lev-width lev-height)
   (handle-collisions *level*)))
 

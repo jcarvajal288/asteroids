@@ -27,6 +27,6 @@
   (let* ((width 1280.0)
          (height 1024.0)
          (ship (make-default-ship width height))
-         (asteroids (map (lambda (_) (build-asteroid width height)) (make-list 1 0)))
+         (asteroids (map (lambda (_) (build-asteroid width height)) (make-list 10 0)))
          (missiles '()))
     (make-level width height ship asteroids missiles)))
