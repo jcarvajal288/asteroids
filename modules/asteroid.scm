@@ -7,6 +7,7 @@
   #:export (build-small-asteroid
             build-medium-asteroid
             build-large-asteroid
+            build-random-asteroid
             asteroid-width
             asteroid-height
             asteroid-size
@@ -85,3 +86,13 @@
                               width
                               height))))
   (make-asteroid width height size velocity heading rotation-speed score-value hitbox)))
+
+(define (build-random-asteroid level-width level-height)
+  (let ((selection (random-float 0 3)))
+    (cond ((< selection 1.2)
+            (build-small-asteroid level-width level-height))
+          ((< selection 2.0)
+            (build-medium-asteroid level-width level-height))
+          (else  
+            (build-large-asteroid level-width level-height)))))
+
