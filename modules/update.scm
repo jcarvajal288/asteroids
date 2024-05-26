@@ -113,11 +113,20 @@
 (define (asteroid-collides? hitbox asteroid)
   (rect-intersects? hitbox (asteroid-hitbox asteroid)))
 
+(define (missile-collides? hitbox missile)
+  (rect-intersects? hitbox (missile-hitbox missile)))
+
 (define (asteroid-hit-missile? asteroid missiles)
   (let* ((colliding-missiles (filter (lambda (m) 
                                        (asteroid-collides? (missile-hitbox m) asteroid))
                                      missiles)))
     (> (length colliding-missiles) 0)))
+
+(define (missile-hit-asteroid? missile asteroids)
+  (let* ((colliding-asteroids (filter (lambda (a)
+                                        (missile-collides? (asteroid-hitbox a) missile))
+                                      asteroids)))
+    (> (length colliding-asteroids) 0)))
 
 (define (handle-ship-collisions *level*)
   (let* ((ship (level-ship *level*))
@@ -129,9 +138,13 @@
 (define (handle-missile-collisions *level*)
   (let* ((missiles (level-missiles *level*))
          (asteroids (level-asteroids *level*))
+         ;; so much redundant searching but it's the last day and I gotta finish aaaaaaaaa
          (non-colliding-asteroids (filter (lambda (a) (not (asteroid-hit-missile? a missiles)))
-                                          asteroids)))
-    (level-asteroids-set! *level* non-colliding-asteroids)))
+                                          asteroids))
+         (non-colliding-missiles (filter (lambda (m) (not (missile-hit-asteroid? m asteroids)))
+                                         missiles)))
+    (level-asteroids-set! *level* non-colliding-asteroids)
+    (level-missiles-set! *level* non-colliding-missiles)))
 
         
 (define (update-all *level*)
