@@ -89,7 +89,8 @@
           (velocity (missile-velocity missile)))
       (move hitbox velocity)
       (edge-warp hitbox lev-width lev-height)))
-  (for-each move-func missiles))
+  (for-each move-func missiles)
+  (for-each progress-arm-timer missiles))
 
 
 (define (edge-warp hitbox width height)
@@ -138,6 +139,7 @@
 
 (define (handle-missile-collisions *level*)
   (let* ((missiles (level-missiles *level*))
+         (ship-rect (ship-hitbox (level-ship *level*)))
          (asteroids (level-asteroids *level*))
          ;; so much redundant searching but it's the last day and I gotta finish aaaaaaaaa
          (colliding-asteroids (filter (lambda (a) (asteroid-hit-missile? a missiles))
@@ -145,7 +147,12 @@
          (non-colliding-asteroids (filter (lambda (a) (not (asteroid-hit-missile? a missiles)))
                                           asteroids))
          (non-colliding-missiles (filter (lambda (m) (not (missile-hit-asteroid? m asteroids)))
-                                         missiles)))
+                                         missiles))
+         (missiles-hitting-player (filter is-armed? 
+                                          (filter (lambda (m) (missile-collides? ship-rect m)) 
+                                                  missiles))))
+    (if (> (length missiles-hitting-player) 0)
+      (ship-alive-set! (level-ship *level*) #f))
     (add-score-for-asteroids *level* colliding-asteroids)
     (level-asteroids-set! *level* non-colliding-asteroids)
     (break-up-destroyed-asteroids *level* colliding-asteroids)
@@ -156,8 +163,6 @@
     (let* ((hitbox (asteroid-hitbox asteroid))
            (x (rect-x hitbox))
            (y (rect-y hitbox))
-           (w (level-width *level*))
-           (h (level-height *level*))
            (size (asteroid-size asteroid))
            (new-asteroids (cond ((eqv? size 'large)
                                    (map (lambda (_) (build-medium-asteroid-at x y)) (make-list 2 0)))
