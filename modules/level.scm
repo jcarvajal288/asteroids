@@ -37,7 +37,7 @@
          (height 1024.0)
          (ship (make-default-ship width height))
          (score 0)
-         (asteroids (map (lambda (_) (build-random-asteroid width height)) (make-list 10 0)))
+         (asteroids (map (lambda (_) (build-large-asteroid width height)) (make-list 3 0)))
          (missiles '()))
     (make-level width height ship score default-asteroid-timer asteroids missiles)))
 
