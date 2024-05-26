@@ -11,11 +11,11 @@
             level-height
             level-ship
             level-score
-            level-score-set!
             level-asteroids
             level-asteroids-set!
             level-missiles
-            level-missiles-set!))
+            level-missiles-set!
+            add-score-for-asteroids))
 
 (define-record-type <level>
   (make-level width height ship score asteroids missiles)
@@ -35,3 +35,8 @@
          (asteroids (map (lambda (_) (build-asteroid width height)) (make-list 10 0)))
          (missiles '()))
     (make-level width height ship score asteroids missiles)))
+
+(define (add-score-for-asteroids *level* asteroids)
+  (let ((new-points (apply + (map asteroid-score-value asteroids))))
+    (level-score-set! *level* (+ (level-score *level*) new-points))))
+

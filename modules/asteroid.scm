@@ -10,17 +10,19 @@
             asteroid-velocity
             asteroid-heading
             asteroid-heading-set!
+            asteroid-score-value
             asteroid-rotation-speed
             asteroid-hitbox))
 
 (define-record-type <asteroid>
-  (make-asteroid width height velocity heading rotation-speed hitbox)
+  (make-asteroid width height velocity heading rotation-speed score-value hitbox)
   asteroid?
   (width asteroid-width)
   (height asteroid-height)
   (velocity asteroid-velocity)
   (heading asteroid-heading asteroid-heading-set!)
   (rotation-speed asteroid-rotation-speed)
+  (score-value asteroid-score-value)
   (hitbox asteroid-hitbox))
 
 (define (build-asteroid level-width level-height)
@@ -29,7 +31,7 @@
          (velocity (vec2 (- (random-float 1 10) 5) (- (random-float 1 10) 5)))
          (heading (random-float 0 360))
          (rotation-speed (random-float 0 2))
-         (alive? #t)
+         (score-value 100)
          (hitbox (if (> (random) 0.5)
                    (make-rect (random-float 0 level-width)
                                level-height
@@ -39,4 +41,4 @@
                               (random-float 0 level-height)
                               width
                               height))))
-  (make-asteroid width height velocity heading rotation-speed hitbox)))
+  (make-asteroid width height velocity heading rotation-speed score-value hitbox)))

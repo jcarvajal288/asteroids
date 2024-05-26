@@ -139,10 +139,13 @@
   (let* ((missiles (level-missiles *level*))
          (asteroids (level-asteroids *level*))
          ;; so much redundant searching but it's the last day and I gotta finish aaaaaaaaa
+         (colliding-asteroids (filter (lambda (a) (asteroid-hit-missile? a missiles))
+                                        asteroids))
          (non-colliding-asteroids (filter (lambda (a) (not (asteroid-hit-missile? a missiles)))
                                           asteroids))
          (non-colliding-missiles (filter (lambda (m) (not (missile-hit-asteroid? m asteroids)))
                                          missiles)))
+    (add-score-for-asteroids *level* colliding-asteroids)
     (level-asteroids-set! *level* non-colliding-asteroids)
     (level-missiles-set! *level* non-colliding-missiles)))
 
