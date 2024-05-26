@@ -11,6 +11,7 @@
             level-height
             level-ship
             level-asteroids
+            level-asteroids-set!
             level-missiles
             level-missiles-set!))
 
@@ -20,7 +21,7 @@
   (width level-width)
   (height level-height)
   (ship level-ship level-ship-set!)
-  (asteroids level-asteroids)
+  (asteroids level-asteroids level-asteroids-set!)
   (missiles level-missiles level-missiles-set!))
 
 (define (make-default-level)

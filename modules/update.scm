@@ -110,15 +110,28 @@
       (set-rect-y! hitbox (cdr warp-point))))
 
 
-(define (asteroid-hit? hitbox asteroid)
+(define (asteroid-collides? hitbox asteroid)
   (rect-intersects? hitbox (asteroid-hitbox asteroid)))
 
-(define (handle-collisions *level*)
+(define (asteroid-hit-missile? asteroid missiles)
+  (let* ((colliding-missiles (filter (lambda (m) 
+                                       (asteroid-collides? (missile-hitbox m) asteroid))
+                                     missiles)))
+    (> (length colliding-missiles) 0)))
+
+(define (handle-ship-collisions *level*)
   (let* ((ship (level-ship *level*))
          (asteroids (level-asteroids *level*))
-         (colliding-asteroids (filter (lambda (a) (asteroid-hit? (ship-hitbox ship) a)) asteroids)))
+         (colliding-asteroids (filter (lambda (a) (asteroid-collides? (ship-hitbox ship) a)) asteroids)))
     (if (> (length colliding-asteroids) 0)
       (ship-alive-set! ship #f))))
+
+(define (handle-missile-collisions *level*)
+  (let* ((missiles (level-missiles *level*))
+         (asteroids (level-asteroids *level*))
+         (non-colliding-asteroids (filter (lambda (a) (not (asteroid-hit-missile? a missiles)))
+                                          asteroids)))
+    (level-asteroids-set! *level* non-colliding-asteroids)))
 
         
 (define (update-all *level*)
@@ -129,6 +142,7 @@
     (move-ship ship lev-width lev-height)
     (progress-fire-cooldown ship)
     (move-asteroids (level-asteroids *level*) lev-width lev-height)
-    (move-missiles (level-missiles *level*) lev-width lev-height)
-  (handle-collisions *level*)))
+    (move-missiles (level-missiles *level*) lev-width lev-height))
+  (handle-ship-collisions *level*)
+  (handle-missile-collisions *level*))
 
