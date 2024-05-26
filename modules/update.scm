@@ -160,5 +160,6 @@
     (move-asteroids (level-asteroids *level*) lev-width lev-height)
     (move-missiles (level-missiles *level*) lev-width lev-height))
   (handle-ship-collisions *level*)
-  (handle-missile-collisions *level*))
+  (handle-missile-collisions *level*)
+  (check-for-new-asteroid *level*))
 
