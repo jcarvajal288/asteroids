@@ -6,6 +6,7 @@
   #:use-module (math rect)
   #:export (build-small-asteroid
             build-medium-asteroid
+            build-large-asteroid
             asteroid-width
             asteroid-height
             asteroid-size
@@ -55,6 +56,25 @@
          (heading (random-float 0 360))
          (rotation-speed (random-float 0 2))
          (score-value 100)
+         (hitbox (if (> (random) 0.5)
+                   (make-rect (random-float 0 level-width)
+                               level-height
+                               width
+                               height)
+                   (make-rect level-width
+                              (random-float 0 level-height)
+                              width
+                              height))))
+  (make-asteroid width height size velocity heading rotation-speed score-value hitbox)))
+
+(define (build-large-asteroid level-width level-height)
+  (let* ((width 91)
+         (height 86)
+         (size 'large)
+         (velocity (vec2 (- (random-float 0.5 5) 2.5) (- (random-float 0.5 5) 2.5)))
+         (heading (random-float 0 360))
+         (rotation-speed (random-float 0 2))
+         (score-value 50)
          (hitbox (if (> (random) 0.5)
                    (make-rect (random-float 0 level-width)
                                level-height
